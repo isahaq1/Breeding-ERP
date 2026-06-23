@@ -1,0 +1,31 @@
+{
+  "name": "HerdLine — Cattle ERP",
+  "short_name": "HerdLine",
+  "description": "Cattle breeding & tracking ERP for farm workers",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#ffffff",
+  "theme_color": "#16a34a",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["agriculture", "productivity", "business"],
+  "shortcuts": [
+    {
+      "name": "Cattle Registry",
+      "url": "/cattle",
+      "description": "View and manage your herd"
+    },
+    {
+      "name": "Analytics",
+      "url": "/analytics",
+      "description": "Herd analytics and biometrics"
+    }
+  ]
+}

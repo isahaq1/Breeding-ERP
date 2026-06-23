@@ -33,7 +33,22 @@ export interface Cattle {
   damId?: string; // mother tag id
   sireId?: string; // father tag id
   pasture: string;
+  farmId?: string;
+  rfidTag?: string;   // ISO 11784 EID, e.g. "716000100101001"
+  gpsLat?: number;    // WGS-84 latitude
+  gpsLng?: number;    // WGS-84 longitude
   acquisition: "Born on farm" | "Purchased";
+  notes?: string;
+}
+
+// ---- Weight Tracking ---------------------------------------------------------
+
+export interface WeightRecord {
+  id: string;          // "WR-001"
+  cattleId: string;
+  date: string;        // ISO date
+  weightKg: number;
+  recordedBy: string;
   notes?: string;
 }
 
@@ -331,6 +346,22 @@ export interface SemenBirth {
   calfWeightKg?: number;
   calvingEase?: CalvingEase;
   status: AIBirthStatus;
+  notes?: string;
+}
+
+// ---- Muzzle Print Biometrics ------------------------------------------------
+
+export type MuzzlePrintQuality = "High" | "Medium" | "Low";
+export type MuzzlePrintMethod = "Digital Scanner" | "Camera Scan" | "Ink Pad";
+
+export interface MuzzlePrint {
+  id: string;             // "MP-001"
+  cattleId: string;
+  printHash: string;      // unique biometric hash e.g. "7F3A-2B8E"
+  capturedDate: string;   // ISO date
+  quality: MuzzlePrintQuality;
+  method: MuzzlePrintMethod;
+  capturedBy: string;
   notes?: string;
 }
 

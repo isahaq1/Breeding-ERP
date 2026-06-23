@@ -13,6 +13,13 @@ export const metadata: Metadata = {
   title: "HerdLine — Cattle Breeding ERP",
   description:
     "Manage your herd, breeding programs, birth history, genetics, health and operations.",
+  manifest: "/manifest.json",
+  themeColor: "#16a34a",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "HerdLine",
+  },
 };
 
 export default function RootLayout({

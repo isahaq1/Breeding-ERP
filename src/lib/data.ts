@@ -18,6 +18,8 @@ import type {
   SaleAgent,
   SaleIncentive,
   SemenBirth,
+  MuzzlePrint,
+  WeightRecord,
 } from "./types";
 
 // ---------------------------------------------------------------------------
@@ -37,6 +39,10 @@ export const cattle: Cattle[] = [
     weightKg: 642,
     sireId: "C-2001",
     pasture: "North Meadow",
+    farmId: "FM-001",
+    rfidTag: "716001100101001",
+    gpsLat: -17.848,
+    gpsLng: 31.047,
     acquisition: "Purchased",
   },
   {
@@ -51,6 +57,10 @@ export const cattle: Cattle[] = [
     damId: "C-1001",
     sireId: "C-2002",
     pasture: "North Meadow",
+    farmId: "FM-001",
+    rfidTag: "716001100101002",
+    gpsLat: -17.849,
+    gpsLng: 31.048,
     acquisition: "Born on farm",
   },
   {
@@ -63,6 +73,10 @@ export const cattle: Cattle[] = [
     health: "Under Treatment",
     weightKg: 658,
     pasture: "East Field",
+    farmId: "FM-001",
+    rfidTag: "716001100101003",
+    gpsLat: -17.852,
+    gpsLng: 31.053,
     acquisition: "Purchased",
   },
   {
@@ -77,6 +91,10 @@ export const cattle: Cattle[] = [
     damId: "C-1003",
     sireId: "C-2001",
     pasture: "South Range",
+    farmId: "FM-002",
+    rfidTag: "716002100101001",
+    gpsLat: -17.918,
+    gpsLng: 31.118,
     acquisition: "Born on farm",
   },
   {
@@ -89,6 +107,10 @@ export const cattle: Cattle[] = [
     health: "Healthy",
     weightKg: 605,
     pasture: "East Field",
+    farmId: "FM-002",
+    rfidTag: "716002100101002",
+    gpsLat: -17.921,
+    gpsLng: 31.122,
     acquisition: "Purchased",
   },
   {
@@ -103,6 +125,10 @@ export const cattle: Cattle[] = [
     damId: "C-1002",
     sireId: "C-2003",
     pasture: "West Paddock",
+    farmId: "FM-003",
+    rfidTag: "716003100101001",
+    gpsLat: -18.008,
+    gpsLng: 31.082,
     acquisition: "Born on farm",
   },
   {
@@ -115,6 +141,10 @@ export const cattle: Cattle[] = [
     health: "Quarantine",
     weightKg: 631,
     pasture: "Quarantine Pen",
+    farmId: "FM-003",
+    rfidTag: "716003100101002",
+    gpsLat: -18.012,
+    gpsLng: 31.078,
     acquisition: "Purchased",
   },
   {
@@ -129,6 +159,10 @@ export const cattle: Cattle[] = [
     damId: "C-1005",
     sireId: "C-2002",
     pasture: "South Range",
+    farmId: "FM-002",
+    rfidTag: "716002100101003",
+    gpsLat: -17.919,
+    gpsLng: 31.119,
     acquisition: "Born on farm",
   },
   {
@@ -141,6 +175,10 @@ export const cattle: Cattle[] = [
     health: "Healthy",
     weightKg: 1024,
     pasture: "Bull Pen",
+    farmId: "FM-001",
+    rfidTag: "716001100102001",
+    gpsLat: -17.851,
+    gpsLng: 31.046,
     acquisition: "Purchased",
   },
   {
@@ -153,6 +191,10 @@ export const cattle: Cattle[] = [
     health: "Healthy",
     weightKg: 968,
     pasture: "Bull Pen",
+    farmId: "FM-002",
+    rfidTag: "716002100102001",
+    gpsLat: -17.921,
+    gpsLng: 31.117,
     acquisition: "Purchased",
   },
   {
@@ -165,6 +207,10 @@ export const cattle: Cattle[] = [
     health: "Healthy",
     weightKg: 912,
     pasture: "Bull Pen",
+    farmId: "FM-003",
+    rfidTag: "716003100102001",
+    gpsLat: -18.009,
+    gpsLng: 31.081,
     acquisition: "Purchased",
   },
   {
@@ -179,6 +225,10 @@ export const cattle: Cattle[] = [
     damId: "C-1001",
     sireId: "C-2001",
     pasture: "Calf Barn",
+    farmId: "FM-001",
+    rfidTag: "716001100103001",
+    gpsLat: -17.851,
+    gpsLng: 31.048,
     acquisition: "Born on farm",
   },
   {
@@ -193,6 +243,10 @@ export const cattle: Cattle[] = [
     damId: "C-1008",
     sireId: "C-2002",
     pasture: "Calf Barn",
+    farmId: "FM-002",
+    rfidTag: "716002100103001",
+    gpsLat: -17.920,
+    gpsLng: 31.120,
     acquisition: "Born on farm",
   },
   {
@@ -207,6 +261,10 @@ export const cattle: Cattle[] = [
     damId: "C-1004",
     sireId: "C-2001",
     pasture: "Calf Barn",
+    farmId: "FM-003",
+    rfidTag: "716003100103001",
+    gpsLat: -18.011,
+    gpsLng: 31.079,
     acquisition: "Born on farm",
   },
   {
@@ -219,6 +277,8 @@ export const cattle: Cattle[] = [
     health: "Healthy",
     weightKg: 401,
     pasture: "—",
+    farmId: "FM-001",
+    rfidTag: "716001100100901",
     acquisition: "Purchased",
   },
 ];
@@ -781,9 +841,9 @@ export const farms: Farm[] = [
     name: "Greenfield Ranch",
     primaryFarmerId: "FR-001",
     location: {
-      latitude: 6.5244,
-      longitude: 3.3792,
-      address: "Km 15, Ibarapa Road, Oyo State, Nigeria",
+      latitude: -17.848,
+      longitude: 31.047,
+      address: "Mashonaland East, Zimbabwe",
       areaHa: 45.5,
     },
     registrationDate: "2022-01-15",
@@ -793,7 +853,7 @@ export const farms: Farm[] = [
     facilityType: "Mixed",
     certifications: "ISO 22000",
     contactPerson: "Omotunde Adeyemi",
-    contactPhone: "+234-803-456-7890",
+    contactPhone: "+263-77-456-7890",
     notes: "Primary operational farm with modern milking facility.",
   },
   {
@@ -801,9 +861,9 @@ export const farms: Farm[] = [
     name: "Meadowbrook Dairy",
     primaryFarmerId: "FR-002",
     location: {
-      latitude: 6.4521,
-      longitude: 3.4156,
-      address: "Lekki Plains, Lagos State, Nigeria",
+      latitude: -17.919,
+      longitude: 31.119,
+      address: "Mashonaland Central, Zimbabwe",
       areaHa: 28.0,
     },
     registrationDate: "2023-06-22",
@@ -813,7 +873,7 @@ export const farms: Farm[] = [
     facilityType: "Dairy",
     certifications: "ISO 22000, Organic Certified",
     contactPerson: "Chioma Okonkwo",
-    contactPhone: "+234-805-123-4567",
+    contactPhone: "+263-77-123-4567",
     notes: "Specialized dairy operation with grazing system.",
   },
   {
@@ -821,9 +881,9 @@ export const farms: Farm[] = [
     name: "Highveld Pastures",
     primaryFarmerId: "FR-003",
     location: {
-      latitude: 6.5089,
-      longitude: 3.3645,
-      address: "Osun State, Nigeria",
+      latitude: -18.009,
+      longitude: 31.081,
+      address: "Mashonaland East, Zimbabwe",
       areaHa: 62.0,
     },
     registrationDate: "2021-03-10",
@@ -833,7 +893,7 @@ export const farms: Farm[] = [
     facilityType: "Beef",
     certifications: "ISO 22000",
     contactPerson: "Tunde Oladele",
-    contactPhone: "+234-802-789-0123",
+    contactPhone: "+263-77-789-0123",
     notes: "Large-scale beef production with extensive grazing.",
   },
 ];
@@ -1668,5 +1728,64 @@ export const semenBirths: SemenBirth[] = [
     status: "Stillbirth",
     notes: "Dam survived; difficult presentation, calf did not survive.",
   },
+];
+
+// ---- Muzzle Print Biometrics ------------------------------------------------
+// 10 of 15 cattle registered. Calves (C-3xxx) too young; C-1007 pending clearance
+// from quarantine; C-0901 (sold) not re-registered.
+
+export const muzzlePrints: MuzzlePrint[] = [
+  { id: "MP-001", cattleId: "C-1001", printHash: "7F3A-2B8E", capturedDate: "2024-03-15", quality: "High",   method: "Digital Scanner", capturedBy: "Dr. Amina Hassan" },
+  { id: "MP-002", cattleId: "C-1002", printHash: "4D1C-9F6A", capturedDate: "2024-05-22", quality: "High",   method: "Camera Scan",     capturedBy: "John Muturi" },
+  { id: "MP-003", cattleId: "C-1003", printHash: "9E5B-7C2D", capturedDate: "2023-11-08", quality: "Medium", method: "Digital Scanner", capturedBy: "Dr. Amina Hassan" },
+  { id: "MP-004", cattleId: "C-1004", printHash: "2A8F-4E1B", capturedDate: "2025-01-20", quality: "High",   method: "Camera Scan",     capturedBy: "Grace Oduya" },
+  { id: "MP-005", cattleId: "C-1005", printHash: "6C3D-9A5F", capturedDate: "2022-09-14", quality: "Low",    method: "Ink Pad",         capturedBy: "John Muturi" },
+  { id: "MP-006", cattleId: "C-1006", printHash: "1B7E-4C8A", capturedDate: "2025-04-18", quality: "High",   method: "Camera Scan",     capturedBy: "Grace Oduya" },
+  { id: "MP-007", cattleId: "C-1008", printHash: "8D2F-6B3E", capturedDate: "2024-12-05", quality: "High",   method: "Digital Scanner", capturedBy: "Dr. Amina Hassan" },
+  { id: "MP-008", cattleId: "C-2001", printHash: "5A9C-1D7F", capturedDate: "2020-03-10", quality: "Medium", method: "Ink Pad",         capturedBy: "John Muturi" },
+  { id: "MP-009", cattleId: "C-2002", printHash: "3E6B-8A4C", capturedDate: "2021-07-22", quality: "High",   method: "Digital Scanner", capturedBy: "Dr. Amina Hassan" },
+  { id: "MP-010", cattleId: "C-2003", printHash: "7C4D-2E9A", capturedDate: "2022-04-01", quality: "Medium", method: "Camera Scan",     capturedBy: "Grace Oduya" },
+];
+
+// ---- Weight History ----------------------------------------------------------
+// 12 monthly records per animal (Jul 2025 – Jun 2026).
+
+const WR_MONTHS = [
+  "2025-07-01","2025-08-01","2025-09-01","2025-10-01","2025-11-01","2025-12-01",
+  "2026-01-01","2026-02-01","2026-03-01","2026-04-01","2026-05-01","2026-06-01",
+];
+
+function weightSeries(
+  cattleId: string,
+  startId: number,
+  weights: number[],
+  recordedBy: string,
+): WeightRecord[] {
+  return weights.map((w, i) => ({
+    id: `WR-${String(startId + i).padStart(3, "0")}`,
+    cattleId,
+    date: WR_MONTHS[i],
+    weightKg: w,
+    recordedBy,
+  }));
+}
+
+export const weightRecords: WeightRecord[] = [
+  ...weightSeries("C-1001",  1, [620,622,625,628,630,634,636,638,640,641,643,642], "Grace Oduya"),
+  ...weightSeries("C-1002", 13, [395,398,401,404,407,410,412,415,417,418,419,418], "Grace Oduya"),
+  ...weightSeries("C-1003", 25, [640,642,645,648,650,652,654,655,656,657,658,658], "John Muturi"),
+  ...weightSeries("C-1004", 37, [490,493,496,499,502,505,507,509,510,511,512,512], "Grace Oduya"),
+  ...weightSeries("C-1005", 49, [590,592,594,596,598,600,601,602,603,604,605,605], "John Muturi"),
+  ...weightSeries("C-1006", 61, [340,344,348,352,356,360,362,364,366,368,370,372], "Grace Oduya"),
+  ...weightSeries("C-1007", 73, [615,617,619,621,623,625,627,629,630,631,631,631], "John Muturi"),
+  ...weightSeries("C-1008", 85, [470,473,476,479,481,483,485,487,488,489,489,489], "Grace Oduya"),
+  ...weightSeries("C-2001", 97, [998,1002,1006,1010,1013,1016,1018,1020,1021,1022,1023,1024], "Dr. Amina Hassan"),
+  ...weightSeries("C-2002",109, [942,946,950,954,957,960,962,964,965,966,967,968], "Dr. Amina Hassan"),
+  ...weightSeries("C-2003",121, [886,890,894,897,900,903,905,907,908,909,911,912], "Dr. Amina Hassan"),
+  ...weightSeries("C-3001",133, [ 42, 50, 58, 66, 71, 75, 79, 83, 85, 87, 88, 88], "Grace Oduya"),
+  ...weightSeries("C-3002",145, [ 38, 45, 52, 57, 62, 65, 68, 70, 71, 71, 71, 71], "Grace Oduya"),
+  ...weightSeries("C-3003",157, [ 32, 40, 50, 58, 65, 70, 73, 76, 77, 78, 79, 79], "John Muturi"),
+  // C-0901 Buttercup — 6 months before sale (Jul–Dec 2025)
+  ...weightSeries("C-0901",169, [385,387,389,390,392,395], "John Muturi").slice(0,6),
 ];
 

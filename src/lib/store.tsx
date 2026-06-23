@@ -36,6 +36,7 @@ import type {
   SaleAgent,
   SaleIncentive,
   SemenBirth,
+  WeightRecord,
 } from "./types";
 import {
   cattle as seedCattle,
@@ -57,6 +58,7 @@ import {
   saleAgents as seedSaleAgents,
   saleIncentives as seedSaleIncentives,
   semenBirths as seedSemenBirths,
+  weightRecords as seedWeightRecords,
 } from "./data";
 
 const STORAGE_KEY = "herdline:data:v2";
@@ -80,6 +82,7 @@ interface DataState {
   saleAgents: SaleAgent[];
   saleIncentives: SaleIncentive[];
   semenBirths: SemenBirth[];
+  weightRecords: WeightRecord[];
 }
 
 const seedState: DataState = {
@@ -101,6 +104,7 @@ const seedState: DataState = {
   saleAgents: seedSaleAgents,
   saleIncentives: seedSaleIncentives,
   semenBirths: seedSemenBirths,
+  weightRecords: seedWeightRecords,
 };
 
 // Next sequential id for a prefix from the trailing number of existing ids
@@ -134,6 +138,7 @@ export interface DataContextValue extends DataState {
   addSaleAgent: (a: Omit<SaleAgent, "id">) => void;
   addSaleIncentive: (i: Omit<SaleIncentive, "id">) => void;
   addSemenBirth: (b: Omit<SemenBirth, "id">) => void;
+  addWeightRecord: (w: Omit<WeightRecord, "id">) => void;
   /** Patch a record in any collection by id. */
   update: <K extends keyof DataState>(
     key: K,
@@ -464,6 +469,19 @@ export function DataProvider({ children }: { children: ReactNode }) {
     }));
   }, []);
 
+  const addWeightRecord = useCallback<DataContextValue["addWeightRecord"]>((w) => {
+    setState((s) => ({
+      ...s,
+      weightRecords: [
+        {
+          ...w,
+          id: nextId("WR-", s.weightRecords.map((x) => x.id), 3),
+        },
+        ...s.weightRecords,
+      ],
+    }));
+  }, []);
+
   const addSemenOrder = useCallback<DataContextValue["addSemenOrder"]>((o) => {
     setState((s) => ({
       ...s,
@@ -527,6 +545,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
       addSaleAgent,
       addSaleIncentive,
       addSemenBirth,
+      addWeightRecord,
       update,
       remove,
       cattleLabel,
@@ -551,6 +570,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
       addSaleAgent,
       addSaleIncentive,
       addSemenBirth,
+      addWeightRecord,
       update,
       remove,
       cattleLabel,

@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="96" fill="#16a34a"/>
+  <!-- Stylised cow head silhouette -->
+  <ellipse cx="256" cy="240" rx="110" ry="95" fill="white"/>
+  <!-- Ears -->
+  <ellipse cx="148" cy="200" rx="38" ry="26" fill="white"/>
+  <ellipse cx="364" cy="200" rx="38" ry="26" fill="white"/>
+  <ellipse cx="148" cy="200" rx="24" ry="16" fill="#bbf7d0"/>
+  <ellipse cx="364" cy="200" rx="24" ry="16" fill="#bbf7d0"/>
+  <!-- Horns -->
+  <path d="M170 175 Q140 120 120 105" stroke="white" stroke-width="16" fill="none" stroke-linecap="round"/>
+  <path d="M342 175 Q372 120 392 105" stroke="white" stroke-width="16" fill="none" stroke-linecap="round"/>
+  <!-- Eyes -->
+  <circle cx="216" cy="225" r="16" fill="#15803d"/>
+  <circle cx="296" cy="225" r="16" fill="#15803d"/>
+  <circle cx="220" cy="221" r="6" fill="white"/>
+  <circle cx="300" cy="221" r="6" fill="white"/>
+  <!-- Nose / muzzle -->
+  <ellipse cx="256" cy="295" rx="52" ry="36" fill="#bbf7d0"/>
+  <circle cx="238" cy="300" r="10" fill="#15803d"/>
+  <circle cx="274" cy="300" r="10" fill="#15803d"/>
+  <!-- RFID ear tag (right ear) -->
+  <rect x="352" y="188" width="28" height="20" rx="4" fill="#facc15"/>
+  <text x="356" y="202" font-size="10" font-family="monospace" font-weight="bold" fill="#78350f">ID</text>
+  <!-- Bottom label -->
+  <text x="256" y="400" text-anchor="middle" font-size="52" font-weight="bold" font-family="system-ui,sans-serif" fill="white" letter-spacing="-1">HerdLine</text>
+</svg>

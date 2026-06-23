@@ -228,13 +228,13 @@ export default function FarmsPage() {
             <TextField
               label="Farm Name"
               value={form.name}
-              onChange={(e) => set("name")(e.target.value)}
+              onChange={set("name")}
               required
             />
             <SelectField
               label="Primary Manager"
               value={form.primaryFarmerId}
-              onChange={(e) => set("primaryFarmerId")(e.target.value)}
+              onChange={set("primaryFarmerId")}
               options={farmers.map((f) => ({
                 value: f.id,
                 label: `${f.firstName} ${f.lastName}`,
@@ -245,7 +245,7 @@ export default function FarmsPage() {
             <TextField
               label="Address/Location"
               value={form.address}
-              onChange={(e) => set("address")(e.target.value)}
+              onChange={set("address")}
               placeholder="e.g., Km 15, Ibarapa Road, Oyo State, Nigeria"
             />
             <TextField label="" value="" onChange={() => {}} />
@@ -257,16 +257,16 @@ export default function FarmsPage() {
             <NumberField
               label="Latitude"
               value={form.latitude}
-              onChange={(e) => set("latitude")(e.target.value)}
-              step="0.0001"
+              onChange={set("latitude")}
+              step={0.0001}
               placeholder="e.g., 6.5244"
               required
             />
             <NumberField
               label="Longitude"
               value={form.longitude}
-              onChange={(e) => set("longitude")(e.target.value)}
-              step="0.0001"
+              onChange={set("longitude")}
+              step={0.0001}
               placeholder="e.g., 3.3792"
               required
             />
@@ -278,26 +278,26 @@ export default function FarmsPage() {
             <NumberField
               label="Total Area (hectares)"
               value={form.totalAreaHa}
-              onChange={(e) => set("totalAreaHa")(e.target.value)}
-              step="0.1"
+              onChange={set("totalAreaHa")}
+              step={0.1}
               required
             />
             <NumberField
               label="Estimated Herd Size"
               value={form.herdSize}
-              onChange={(e) => set("herdSize")(e.target.value)}
+              onChange={set("herdSize")}
               required
             />
             <SelectField
               label="Facility Type"
               value={form.facilityType}
-              onChange={(e) => set("facilityType")(e.target.value)}
+              onChange={set("facilityType")}
               options={["Dairy", "Beef", "Mixed", "Breeding"]}
             />
             <SelectField
               label="Status"
               value={form.status}
-              onChange={(e) => set("status")(e.target.value)}
+              onChange={set("status")}
               options={["Active", "Inactive", "Under Development"]}
             />
             <div className="col-span-2 border-t border-line pt-2">
@@ -308,24 +308,24 @@ export default function FarmsPage() {
             <TextField
               label="Contact Person"
               value={form.contactPerson}
-              onChange={(e) => set("contactPerson")(e.target.value)}
+              onChange={set("contactPerson")}
             />
             <TextField
               label="Contact Phone"
               value={form.contactPhone}
-              onChange={(e) => set("contactPhone")(e.target.value)}
+              onChange={set("contactPhone")}
             />
             <TextField
               label="Certifications"
               value={form.certifications}
-              onChange={(e) => set("certifications")(e.target.value)}
+              onChange={set("certifications")}
               placeholder="e.g., ISO 22000, Organic"
             />
             <div className="col-span-2">
               <TextAreaField
                 label="Notes"
                 value={form.notes}
-                onChange={(e) => set("notes")(e.target.value)}
+                onChange={set("notes")}
                 rows={2}
               />
             </div>
