@@ -20,6 +20,36 @@ import type {
   SemenBirth,
   MuzzlePrint,
   WeightRecord,
+  BullRegistration,
+  CollarReading,
+  MovementRecord,
+  HeatDetectionAlert,
+  BlockchainRecord,
+  DistributionChannel,
+  DistributionArea,
+  TerritoryManager,
+  DistributionZone,
+  DistributionTerritory,
+  SemenQualityTest,
+  SemenBatch,
+  SemenBatchQuality,
+  SemenStraw,
+  NitrogenTank,
+  TankCanister,
+  StrawStorage,
+  Pedigree,
+  GenomicRecord,
+  HierarchyLevel,
+  HierarchyNode,
+  FarmerCattle,
+  InseminationEvent,
+  PregnancyDiagnosis,
+  DistributionPoint,
+  DPStrawStock,
+  StrawDispatch,
+  AgentStrawIssue,
+  FarmerCalfBirth,
+  IncentiveSettlement,
 } from "./types";
 
 // ---------------------------------------------------------------------------
@@ -1789,3 +1819,588 @@ export const weightRecords: WeightRecord[] = [
   ...weightSeries("C-0901",169, [385,387,389,390,392,395], "John Muturi").slice(0,6),
 ];
 
+// ---- Government Bull Registrations ------------------------------------------
+
+export const bullRegistrations: BullRegistration[] = [
+  {
+    id: "BREG-001",
+    bullId: "C-2001",
+    regNo: "ZW-BULL-2024-0047",
+    authority: "Dept. of Livestock & Veterinary Services",
+    country: "Zimbabwe",
+    issueDate: "2024-03-15",
+    expiryDate: "2027-03-14",
+    certificateNo: "DLVS/CERT/2024/047",
+    status: "Active",
+    bseGrade: "Satisfactory",
+    bseDate: "2024-03-10",
+    bseTechnician: "Dr. Sipho Moyo",
+    brucellosisClear: true,
+    tbClear: true,
+    viralDiseasesClear: true,
+    clearanceDate: "2024-03-08",
+    isImported: false,
+  },
+  {
+    id: "BREG-002",
+    bullId: "C-2002",
+    regNo: "ZW-BULL-2024-0051",
+    authority: "Dept. of Livestock & Veterinary Services",
+    country: "Zimbabwe",
+    issueDate: "2024-04-20",
+    expiryDate: "2027-04-19",
+    certificateNo: "DLVS/CERT/2024/051",
+    status: "Active",
+    bseGrade: "Satisfactory",
+    bseDate: "2024-04-18",
+    bseTechnician: "Dr. Sipho Moyo",
+    brucellosisClear: true,
+    tbClear: true,
+    viralDiseasesClear: true,
+    clearanceDate: "2024-04-15",
+    isImported: false,
+  },
+  {
+    id: "BREG-003",
+    bullId: "C-2003",
+    regNo: "ZW-BULL-2025-0013",
+    authority: "Dept. of Livestock & Veterinary Services",
+    country: "Zimbabwe",
+    issueDate: "2025-01-10",
+    expiryDate: "2028-01-09",
+    certificateNo: "DLVS/CERT/2025/013",
+    status: "Active",
+    bseGrade: "Satisfactory",
+    bseDate: "2025-01-08",
+    bseTechnician: "Dr. Tendai Chikwanda",
+    brucellosisClear: true,
+    tbClear: true,
+    viralDiseasesClear: true,
+    clearanceDate: "2025-01-05",
+    isImported: false,
+  },
+];
+
+// ---- Distribution Channels --------------------------------------------------
+
+export const distributionChannels: DistributionChannel[] = [
+  { id: "DC-001", name: "Northern Region Network", code: "NRN", type: "Agent Network", status: "Active", description: "Mashonaland provinces via AI technician agent network", createdDate: "2024-01-15", nsmId: "TM-001" },
+  { id: "DC-002", name: "Southern Cooperative", code: "SCO", type: "Cooperative", status: "Active", description: "Masvingo and Matabeleland farmer cooperatives", createdDate: "2024-03-01", nsmId: "TM-001" },
+  { id: "DC-003", name: "Direct Farm Program", code: "DFP", type: "Direct Sales", status: "Active", description: "Large commercial farms served directly without agents", createdDate: "2024-06-01", nsmId: "TM-001" },
+  { id: "DC-004", name: "Online Semen Portal", code: "OSP", type: "Online", status: "Inactive", description: "E-commerce channel for semen catalogue orders", createdDate: "2025-01-01" },
+];
+
+export const distributionAreas: DistributionArea[] = [
+  { id: "DA-001", channelId: "DC-001", zoneId: "DZ-001", name: "Harare Metro", code: "HAR", lat: -17.8252, lng: 31.0335, radiusKm: 50, address: "Harare, Zimbabwe", province: "Harare", district: "Harare Urban", asmId: "TM-004", agentIds: ["SA-001"], status: "Active" },
+  { id: "DA-002", channelId: "DC-001", zoneId: "DZ-001", name: "Bindura District", code: "BND", lat: -17.3022, lng: 31.3378, radiusKm: 60, address: "Bindura, Mashonaland Central", province: "Mashonaland Central", district: "Bindura", asmId: "TM-004", agentIds: ["SA-002"], status: "Active" },
+  { id: "DA-003", channelId: "DC-001", zoneId: "DZ-001", name: "Marondera East", code: "MRD", lat: -18.1850, lng: 31.5519, radiusKm: 45, address: "Marondera, Mashonaland East", province: "Mashonaland East", district: "Marondera", asmId: "TM-004", agentIds: ["SA-001", "SA-003"], status: "Active" },
+  { id: "DA-004", channelId: "DC-002", zoneId: "DZ-002", name: "Masvingo Central", code: "MSV", lat: -20.0723, lng: 30.8326, radiusKm: 80, address: "Masvingo, Zimbabwe", province: "Masvingo", district: "Masvingo Urban", asmId: "TM-005", agentIds: ["SA-002"], status: "Active" },
+  { id: "DA-005", channelId: "DC-002", zoneId: "DZ-002", name: "Bulawayo Region", code: "BYO", lat: -20.1510, lng: 28.5830, radiusKm: 70, address: "Bulawayo, Matabeleland South", province: "Matabeleland South", district: "Bulawayo", asmId: "TM-005", agentIds: ["SA-003"], status: "Active" },
+  { id: "DA-006", channelId: "DC-003", zoneId: "DZ-003", name: "Mazowe Valley", code: "MZW", lat: -17.5128, lng: 30.9727, radiusKm: 35, address: "Mazowe, Mashonaland Central", province: "Mashonaland Central", district: "Mazowe", asmId: "TM-006", agentIds: [], status: "Active" },
+  { id: "DA-007", channelId: "DC-003", zoneId: "DZ-003", name: "Beatrice Farms Belt", code: "BTC", lat: -18.2669, lng: 30.9332, radiusKm: 40, address: "Beatrice, Mashonaland East", province: "Mashonaland East", district: "Seke", asmId: "TM-006", agentIds: [], status: "Inactive" },
+];
+
+// ---- Territory Managers ----------------------------------------------------
+
+export const territoryManagers: TerritoryManager[] = [
+  { id: "TM-001", name: "John Moyo", role: "NSM", phone: "+263-77-200-0001", email: "j.moyo@herdline.co.zw", isActive: true, joinDate: "2022-01-01", notes: "National Sales Manager — oversees all distribution channels." },
+  { id: "TM-002", name: "Sarah Ndlovu", role: "RSM", phone: "+263-77-200-0002", email: "s.ndlovu@herdline.co.zw", isActive: true, joinDate: "2022-03-01", notes: "Regional Sales Manager — Northern Zone (Mashonaland provinces + Harare)." },
+  { id: "TM-003", name: "Peter Chigumira", role: "RSM", phone: "+263-77-200-0003", email: "p.chigumira@herdline.co.zw", isActive: true, joinDate: "2022-06-01", notes: "Regional Sales Manager — Southern Zone (Masvingo + Matabeleland + Midlands)." },
+  { id: "TM-004", name: "Grace Mutasa", role: "ASM", phone: "+263-77-200-0004", email: "g.mutasa@herdline.co.zw", isActive: true, joinDate: "2023-01-10", notes: "Area Sales Manager — Harare, Bindura, and Marondera areas." },
+  { id: "TM-005", name: "Kevin Sibanda", role: "ASM", phone: "+263-77-200-0005", email: "k.sibanda@herdline.co.zw", isActive: true, joinDate: "2023-02-15", notes: "Area Sales Manager — Masvingo and Bulawayo areas." },
+  { id: "TM-006", name: "Patricia Dube", role: "ASM", phone: "+263-77-200-0006", email: "p.dube@herdline.co.zw", isActive: true, joinDate: "2023-04-01", notes: "Area Sales Manager — Mazowe and Beatrice direct farm programme." },
+  { id: "TM-007", name: "Tatenda Mhaka", role: "TSM", phone: "+263-77-200-0007", email: "t.mhaka@herdline.co.zw", isActive: true, joinDate: "2023-06-01", notes: "Territory Sales Manager — Harare Urban and Harare East territories." },
+  { id: "TM-008", name: "Rumbi Chivanda", role: "TSM", phone: "+263-77-200-0008", email: "r.chivanda@herdline.co.zw", isActive: true, joinDate: "2023-07-01", notes: "Territory Sales Manager — Bindura and Marondera territories." },
+  { id: "TM-009", name: "Blessing Sithole", role: "TSM", phone: "+263-77-200-0009", email: "b.sithole@herdline.co.zw", isActive: true, joinDate: "2023-09-01", notes: "Territory Sales Manager — Masvingo and Bulawayo territories." },
+];
+
+// ---- Distribution Zones ----------------------------------------------------
+
+export const distributionZones: DistributionZone[] = [
+  { id: "DZ-001", channelId: "DC-001", name: "Northern Zone", code: "NZ", rsmId: "TM-002", provinces: ["Harare", "Mashonaland Central", "Mashonaland East", "Mashonaland West"], status: "Active", notes: "Covers all Mashonaland provinces and Harare metro." },
+  { id: "DZ-002", channelId: "DC-002", name: "Southern Zone", code: "SZ", rsmId: "TM-003", provinces: ["Masvingo", "Matabeleland North", "Matabeleland South", "Midlands"], status: "Active", notes: "Cooperative-led distribution across Southern Zimbabwe." },
+  { id: "DZ-003", channelId: "DC-003", name: "Commercial Zone", code: "CZ", rsmId: undefined, provinces: ["Mashonaland Central", "Mashonaland East"], status: "Active", notes: "Direct farm programme for large commercial operations." },
+];
+
+// ---- Distribution Territories ----------------------------------------------
+
+export const distributionTerritories: DistributionTerritory[] = [
+  { id: "DT-001", channelId: "DC-001", zoneId: "DZ-001", areaId: "DA-001", name: "Harare Urban", code: "HUR", tsmId: "TM-007", agentIds: ["SA-001"], lat: -17.8292, lng: 31.0522, radiusKm: 20, beat: "Beat A", district: "Harare Urban", status: "Active" },
+  { id: "DT-002", channelId: "DC-001", zoneId: "DZ-001", areaId: "DA-001", name: "Harare East", code: "HEA", tsmId: "TM-007", agentIds: [], lat: -17.8120, lng: 31.1000, radiusKm: 25, beat: "Beat B", district: "Harare East", status: "Active" },
+  { id: "DT-003", channelId: "DC-001", zoneId: "DZ-001", areaId: "DA-002", name: "Bindura Central", code: "BCA", tsmId: "TM-008", agentIds: ["SA-002"], lat: -17.3022, lng: 31.3378, radiusKm: 30, beat: "Beat C", district: "Bindura", status: "Active" },
+  { id: "DT-004", channelId: "DC-001", zoneId: "DZ-001", areaId: "DA-003", name: "Marondera Beat", code: "MBT", tsmId: "TM-008", agentIds: ["SA-001", "SA-003"], lat: -18.1850, lng: 31.5519, radiusKm: 30, beat: "Beat D", district: "Marondera", status: "Active" },
+  { id: "DT-005", channelId: "DC-002", zoneId: "DZ-002", areaId: "DA-004", name: "Masvingo Urban", code: "MUB", tsmId: "TM-009", agentIds: ["SA-002"], lat: -20.0723, lng: 30.8326, radiusKm: 35, beat: "Beat E", district: "Masvingo Urban", status: "Active" },
+  { id: "DT-006", channelId: "DC-002", zoneId: "DZ-002", areaId: "DA-005", name: "Bulawayo Metro", code: "BMT", tsmId: "TM-009", agentIds: ["SA-003"], lat: -20.1510, lng: 28.5830, radiusKm: 30, beat: "Beat F", district: "Bulawayo", status: "Active" },
+];
+
+// ---- Dynamic Hierarchy Levels -----------------------------------------------
+
+export const hierarchyLevels: HierarchyLevel[] = [
+  { id: "LVL-001", name: "Channel",   rank: 1, managerTitle: "NSM", color: "blue",   isActive: true },
+  { id: "LVL-002", name: "Zone",      rank: 2, managerTitle: "RSM", color: "green",  isActive: true },
+  { id: "LVL-003", name: "Area",      rank: 3, managerTitle: "ASM", color: "purple", isActive: true },
+  { id: "LVL-004", name: "Territory", rank: 4, managerTitle: "TSM", color: "amber",  isActive: true },
+];
+
+// ---- Dynamic Hierarchy Nodes ------------------------------------------------
+
+export const hierarchyNodes: HierarchyNode[] = [
+  // ── Channels (rank 1) ──────────────────────────────────────────────────────
+  { id: "HN-001", levelId: "LVL-001", name: "Agent Network Channel", code: "ANC", managerId: "TM-001", agentIds: [], status: "Active", notes: "Primary rural AI-technician distribution network." },
+  { id: "HN-002", levelId: "LVL-001", name: "Direct Sales Channel",  code: "DSC", managerId: "TM-001", agentIds: [], status: "Active", notes: "Direct B2B semen sales to large commercial farms." },
+  { id: "HN-003", levelId: "LVL-001", name: "Cooperative Channel",   code: "COC", managerId: "TM-001", agentIds: [], status: "Active", notes: "Partnership with smallholder cooperatives." },
+  // ── Zones (rank 2) ─────────────────────────────────────────────────────────
+  { id: "HN-004", levelId: "LVL-002", parentId: "HN-001", name: "Northern Zone", code: "NZ", managerId: "TM-002", agentIds: [], provinces: ["Harare", "Mashonaland Central", "Mashonaland East", "Mashonaland West"], status: "Active" },
+  { id: "HN-005", levelId: "LVL-002", parentId: "HN-002", name: "Southern Zone", code: "SZ", managerId: "TM-003", agentIds: [], provinces: ["Masvingo", "Matabeleland North", "Matabeleland South", "Midlands"], status: "Active" },
+  { id: "HN-006", levelId: "LVL-002", parentId: "HN-003", name: "Commercial Zone", code: "CZ", agentIds: [], provinces: ["Mashonaland Central", "Mashonaland East"], status: "Active" },
+  // ── Areas (rank 3) ─────────────────────────────────────────────────────────
+  { id: "HN-007", levelId: "LVL-003", parentId: "HN-004", name: "Harare Area",   code: "HAR", managerId: "TM-004", agentIds: ["SA-001"], lat: -17.8252, lng: 31.0335, radiusKm: 50, district: "Harare",   status: "Active" },
+  { id: "HN-008", levelId: "LVL-003", parentId: "HN-004", name: "Bindura Area",  code: "BND", managerId: "TM-004", agentIds: ["SA-002"], lat: -17.3022, lng: 31.3378, radiusKm: 40, district: "Bindura",  status: "Active" },
+  { id: "HN-009", levelId: "LVL-003", parentId: "HN-004", name: "Marondera Area",code: "MRN", managerId: "TM-004", agentIds: [],         lat: -18.1850, lng: 31.5519, radiusKm: 45, district: "Marondera",status: "Active" },
+  { id: "HN-010", levelId: "LVL-003", parentId: "HN-005", name: "Masvingo Area", code: "MSV", managerId: "TM-005", agentIds: [],         lat: -20.0723, lng: 30.8326, radiusKm: 60, district: "Masvingo", status: "Active" },
+  { id: "HN-011", levelId: "LVL-003", parentId: "HN-005", name: "Bulawayo Area", code: "BWY", managerId: "TM-005", agentIds: [],         lat: -20.1510, lng: 28.5830, radiusKm: 50, district: "Bulawayo", status: "Active" },
+  { id: "HN-012", levelId: "LVL-003", parentId: "HN-006", name: "Mazowe Area",   code: "MZW", managerId: "TM-006", agentIds: [],         lat: -17.5200, lng: 30.9800, radiusKm: 40, district: "Mazowe",   status: "Active" },
+  { id: "HN-013", levelId: "LVL-003", parentId: "HN-006", name: "Beatrice Area", code: "BTC", managerId: "TM-006", agentIds: [],         lat: -18.2700, lng: 30.9100, radiusKm: 35, district: "Beatrice", status: "Active" },
+  // ── Territories (rank 4) ───────────────────────────────────────────────────
+  { id: "HN-014", levelId: "LVL-004", parentId: "HN-007", name: "Harare Urban",    code: "HUR", managerId: "TM-007", agentIds: ["SA-001"],         lat: -17.8292, lng: 31.0522, radiusKm: 20, beat: "Beat A", district: "Harare Urban", status: "Active" },
+  { id: "HN-015", levelId: "LVL-004", parentId: "HN-007", name: "Harare East",     code: "HEA", managerId: "TM-007", agentIds: [],                 lat: -17.8120, lng: 31.1000, radiusKm: 25, beat: "Beat B", district: "Harare East",  status: "Active" },
+  { id: "HN-016", levelId: "LVL-004", parentId: "HN-008", name: "Bindura Central", code: "BCA", managerId: "TM-008", agentIds: ["SA-002"],         lat: -17.3022, lng: 31.3378, radiusKm: 30, beat: "Beat C", district: "Bindura",      status: "Active" },
+  { id: "HN-017", levelId: "LVL-004", parentId: "HN-009", name: "Marondera Beat",  code: "MBT", managerId: "TM-008", agentIds: ["SA-001", "SA-003"], lat: -18.1850, lng: 31.5519, radiusKm: 30, beat: "Beat D", district: "Marondera",    status: "Active" },
+  { id: "HN-018", levelId: "LVL-004", parentId: "HN-010", name: "Masvingo Urban",  code: "MUB", managerId: "TM-009", agentIds: ["SA-002"],         lat: -20.0723, lng: 30.8326, radiusKm: 35, beat: "Beat E", district: "Masvingo",      status: "Active" },
+  { id: "HN-019", levelId: "LVL-004", parentId: "HN-011", name: "Bulawayo Metro",  code: "BMT", managerId: "TM-009", agentIds: ["SA-003"],         lat: -20.1510, lng: 28.5830, radiusKm: 30, beat: "Beat F", district: "Bulawayo",      status: "Active" },
+];
+
+// ---- IoT Collar Readings ----------------------------------------------------
+
+export const collarReadings: CollarReading[] = [
+  { id: "CR-001", cattleId: "C-1001", temperature: 38.6, activityIndex: 42, batteryPct: 87, heartRate: 68, ruminationMinPh: 38, gpsLat: -17.848, gpsLng: 31.047, lastSync: "2026-06-23T07:15:00", isOnline: true },
+  { id: "CR-002", cattleId: "C-1002", temperature: 39.1, activityIndex: 81, batteryPct: 64, heartRate: 78, ruminationMinPh: 22, gpsLat: -17.849, gpsLng: 31.048, lastSync: "2026-06-23T07:14:00", isOnline: true },
+  { id: "CR-003", cattleId: "C-1003", temperature: 39.8, activityIndex: 35, batteryPct: 91, heartRate: 74, ruminationMinPh: 41, gpsLat: -17.852, gpsLng: 31.053, lastSync: "2026-06-23T07:10:00", isOnline: true },
+  { id: "CR-004", cattleId: "C-1004", temperature: 38.4, activityIndex: 58, batteryPct: 73, heartRate: 71, ruminationMinPh: 44, gpsLat: -17.918, gpsLng: 31.118, lastSync: "2026-06-23T07:12:00", isOnline: true },
+  { id: "CR-005", cattleId: "C-1005", temperature: 38.2, activityIndex: 29, batteryPct: 18, heartRate: 66, ruminationMinPh: 47, gpsLat: -17.921, gpsLng: 31.122, lastSync: "2026-06-23T06:42:00", isOnline: true },
+  { id: "CR-006", cattleId: "C-1007", temperature: 39.6, activityIndex: 19, batteryPct: 55, heartRate: 82, ruminationMinPh: 15, gpsLat: -18.012, gpsLng: 31.078, lastSync: "2026-06-23T07:13:00", isOnline: true },
+  { id: "CR-007", cattleId: "C-2001", temperature: 38.8, activityIndex: 45, batteryPct: 92, heartRate: 58, gpsLat: -17.851, gpsLng: 31.046, lastSync: "2026-06-23T07:16:00", isOnline: true },
+  { id: "CR-008", cattleId: "C-2002", temperature: 38.5, activityIndex: 37, batteryPct: 14, heartRate: 61, gpsLat: -17.921, gpsLng: 31.117, lastSync: "2026-06-23T05:30:00", isOnline: false },
+  { id: "CR-009", cattleId: "C-1008", temperature: 38.3, activityIndex: 53, batteryPct: 79, heartRate: 69, ruminationMinPh: 42, gpsLat: -17.919, gpsLng: 31.119, lastSync: "2026-06-23T07:11:00", isOnline: true },
+  { id: "CR-010", cattleId: "C-1006", temperature: 38.7, activityIndex: 88, batteryPct: 66, heartRate: 80, ruminationMinPh: 18, gpsLat: -18.008, gpsLng: 31.082, lastSync: "2026-06-23T07:09:00", isOnline: true },
+];
+
+// ---- Animal Movement History ------------------------------------------------
+
+export const movementRecords: MovementRecord[] = [
+  { id: "MV-001", cattleId: "C-1001", timestamp: "2026-06-01T08:30:00", eventType: "Pasture Move", fromLocation: "East Field", toLocation: "North Meadow", lat: -17.848, lng: 31.047, recordedBy: "James Moyo", notes: "Rotational grazing" },
+  { id: "MV-002", cattleId: "C-1007", timestamp: "2026-05-28T10:00:00", eventType: "Quarantine Entry", fromLocation: "West Paddock", toLocation: "Quarantine Pen", lat: -18.012, lng: 31.078, recordedBy: "Dr. Sipho Moyo", notes: "Suspected respiratory illness" },
+  { id: "MV-003", cattleId: "C-1003", timestamp: "2026-06-10T14:15:00", eventType: "Vet Visit", fromLocation: "East Field", toLocation: "Treatment Bay", recordedBy: "Dr. Sipho Moyo", notes: "Mastitis follow-up" },
+  { id: "MV-004", cattleId: "C-2001", timestamp: "2026-05-20T09:00:00", eventType: "AI Visit", fromLocation: "Bull Pen", toLocation: "Service Stall", recordedBy: "John Mutumba" },
+  { id: "MV-005", cattleId: "C-1004", timestamp: "2026-04-15T11:00:00", eventType: "Farm Transfer", fromLocation: "Greenfield Ranch (FM-001)", toLocation: "Sunrise Farm (FM-002)", recordedBy: "Admin", notes: "Herd redistribution" },
+  { id: "MV-006", cattleId: "C-1001", timestamp: "2026-03-10T07:45:00", eventType: "Pasture Move", fromLocation: "North Meadow", toLocation: "East Field", recordedBy: "James Moyo" },
+  { id: "MV-007", cattleId: "C-1002", timestamp: "2026-06-22T06:50:00", eventType: "GPS Ping", fromLocation: "North Meadow", toLocation: "North Meadow", lat: -17.849, lng: 31.048, recordedBy: "IoT System", notes: "High activity GPS auto-log" },
+  { id: "MV-008", cattleId: "C-0901", timestamp: "2026-01-20T14:00:00", eventType: "Sale Transfer", fromLocation: "Greenfield Ranch", toLocation: "External — Harvest Farms", recordedBy: "Admin" },
+  { id: "MV-009", cattleId: "C-1005", timestamp: "2026-06-05T08:00:00", eventType: "Pasture Move", fromLocation: "South Range", toLocation: "East Field", recordedBy: "Alice Zimba" },
+  { id: "MV-010", cattleId: "C-3001", timestamp: "2026-06-20T09:30:00", eventType: "Pasture Move", fromLocation: "Calf Barn", toLocation: "North Meadow", recordedBy: "James Moyo", notes: "Weaning move" },
+  { id: "MV-011", cattleId: "C-1007", timestamp: "2026-06-18T11:00:00", eventType: "Quarantine Release", fromLocation: "Quarantine Pen", toLocation: "West Paddock", recordedBy: "Dr. Sipho Moyo", notes: "Cleared after treatment" },
+  { id: "MV-012", cattleId: "C-2003", timestamp: "2026-06-22T10:00:00", eventType: "AI Visit", fromLocation: "Bull Pen", toLocation: "Service Stall", recordedBy: "John Mutumba" },
+  { id: "MV-013", cattleId: "C-1006", timestamp: "2026-06-20T22:30:00", eventType: "GPS Ping", fromLocation: "West Paddock", toLocation: "West Paddock", lat: -18.008, lng: 31.082, recordedBy: "IoT System", notes: "Heat detection high-activity ping" },
+  { id: "MV-014", cattleId: "C-2002", timestamp: "2026-04-02T09:00:00", eventType: "AI Visit", fromLocation: "Bull Pen", toLocation: "Service Stall", recordedBy: "John Mutumba" },
+  { id: "MV-015", cattleId: "C-1008", timestamp: "2026-05-12T07:00:00", eventType: "Pasture Move", fromLocation: "South Range", toLocation: "East Field", recordedBy: "Alice Zimba" },
+];
+
+// ---- Heat Detection Alerts --------------------------------------------------
+
+export const heatDetectionAlerts: HeatDetectionAlert[] = [
+  { id: "HD-001", cattleId: "C-1002", detectedAt: "2026-06-22T03:45:00", confidence: 94, source: "IoT Collar", activitySpike: 187, temperature: 38.9, status: "Active" },
+  { id: "HD-002", cattleId: "C-1006", detectedAt: "2026-06-20T22:10:00", confidence: 78, source: "IoT Collar", activitySpike: 145, temperature: 38.7, status: "Bred", breedingRecordId: "BR-004" },
+  { id: "HD-003", cattleId: "C-1001", detectedAt: "2026-06-15T01:20:00", confidence: 62, source: "Pedometer", activitySpike: 112, status: "False Alarm", notes: "Disturbance from nearby construction, not estrus" },
+  { id: "HD-004", cattleId: "C-1005", detectedAt: "2026-06-10T04:30:00", confidence: 89, source: "IoT Collar", activitySpike: 175, temperature: 39.1, status: "Confirmed" },
+  { id: "HD-005", cattleId: "C-1008", detectedAt: "2026-06-08T23:55:00", confidence: 55, source: "Visual Observation", status: "Dismissed", notes: "Stress from herd change, not estrus" },
+  { id: "HD-006", cattleId: "C-1004", detectedAt: "2026-06-01T02:15:00", confidence: 91, source: "IoT Collar", activitySpike: 192, temperature: 39.0, status: "Bred", breedingRecordId: "BR-003" },
+];
+
+// ---- Blockchain Pedigree Registry -------------------------------------------
+
+export const blockchainRecords: BlockchainRecord[] = [
+  { id: "BC-001", entityType: "Pedigree Certificate", entityId: "C-1001", blockNumber: 14892, blockHash: "0x7f3a2b8e4c1d9f0a3e8b2c7d5f4a6b9e", previousHash: "0x3a8f2e7c1b4d9a0f5e2c6b8d1a4f7c0e", dataHash: "0xa1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6", timestamp: "2026-03-01T10:00:00", network: "AgriChain", txId: "0xabc123def456789", isVerified: true, verifiedAt: "2026-06-01T09:00:00" },
+  { id: "BC-002", entityType: "Bull Registration", entityId: "BREG-001", blockNumber: 15001, blockHash: "0x2c5d8f1a4b7e0c3f6a9d2b5e8c1f4a7d", previousHash: "0x7f3a2b8e4c1d9f0a3e8b2c7d5f4a6b9e", dataHash: "0xd5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0", timestamp: "2026-04-10T14:30:00", network: "AgriChain", txId: "0xdef456abc789012", isVerified: true, verifiedAt: "2026-06-10T10:00:00" },
+  { id: "BC-003", entityType: "Pedigree Certificate", entityId: "C-2001", blockNumber: 14750, blockHash: "0x8e1b4d7a0f3c6e9b2d5a8f1c4e7b0d3a", previousHash: "0x2c5d8f1a4b7e0c3f6a9d2b5e8c1f4a7d", dataHash: "0xf0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5", timestamp: "2026-01-15T09:00:00", network: "LivestockLedger", txId: "0x789abc123def456", isVerified: true, verifiedAt: "2026-05-15T08:30:00" },
+  { id: "BC-004", entityType: "Health Record", entityId: "C-1003", blockNumber: 15234, blockHash: "0x5f2a8d1e4b7c0f3a6d9b2e5c8f1a4d7b", previousHash: "0x8e1b4d7a0f3c6e9b2d5a8f1c4e7b0d3a", dataHash: "0xb3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8", timestamp: "2026-05-20T16:00:00", network: "HerdChain", txId: "0x456789abc012345", isVerified: false },
+  { id: "BC-005", entityType: "Ownership Transfer", entityId: "C-0901", blockNumber: 15102, blockHash: "0x3d6a9f2c5b8e1d4a7f0c3e6b9d2a5c8e", previousHash: "0x5f2a8d1e4b7c0f3a6d9b2e5c8f1a4d7b", dataHash: "0xe7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2", timestamp: "2026-01-20T14:00:00", network: "AgriChain", txId: "0x012456789abcdef", isVerified: true, verifiedAt: "2026-06-20T11:00:00" },
+  { id: "BC-006", entityType: "Vaccination Record", entityId: "C-1002", blockNumber: 15312, blockHash: "0x9c2e5a8d1f4b7e0c3a6d9b2e5f8c1a4e", previousHash: "0x3d6a9f2c5b8e1d4a7f0c3e6b9d2a5c8e", dataHash: "0xa9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4", timestamp: "2026-06-05T11:00:00", network: "HerdChain", txId: "0xabc012456789def", isVerified: true, verifiedAt: "2026-06-22T09:00:00" },
+  { id: "BC-007", entityType: "Pedigree Certificate", entityId: "C-1002", blockNumber: 15400, blockHash: "0x4e7a0d3b6c9f2e5a8d1b4c7f0e3a6d9b", previousHash: "0x9c2e5a8d1f4b7e0c3a6d9b2e5f8c1a4e", dataHash: "0xc5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0", timestamp: "2026-06-22T08:00:00", network: "AgriChain", txId: "0x789012abc456789", isVerified: false },
+  { id: "BC-008", entityType: "Bull Registration", entityId: "BREG-002", blockNumber: 15050, blockHash: "0x6b9d2f5c8e1a4d7b0c3f6e9a2d5b8c1e", previousHash: "0x4e7a0d3b6c9f2e5a8d1b4c7f0e3a6d9b", dataHash: "0xd7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2", timestamp: "2026-03-20T12:00:00", network: "LivestockLedger", txId: "0x345678901234abc", isVerified: true, verifiedAt: "2026-06-15T10:00:00" },
+];
+
+// ---- Semen Quality Tests ----------------------------------------------------
+
+export const semenQualityTests: SemenQualityTest[] = [
+  {
+    id: "SQT-001", collectionId: "SC-001", bullId: "C-2001",
+    testDate: "2026-04-16", testedBy: "Dr. Chisamba",
+    totalMotilityPct: 78, progressiveMotilityPct: 68, morphologyNormalPct: 72,
+    concentrationMPerMl: 1200, viabilityPct: 82, volumeMl: 6.2, pH: 6.8,
+    colorAppearance: "Creamy White", acrosomalIntegrityPct: 88,
+    dnaFragmentationPct: 8, result: "Pass", notes: "Excellent pre-freeze motility",
+  },
+  {
+    id: "SQT-002", collectionId: "SC-002", bullId: "C-2002",
+    testDate: "2026-04-22", testedBy: "Dr. Chisamba",
+    totalMotilityPct: 71, progressiveMotilityPct: 62, morphologyNormalPct: 68,
+    concentrationMPerMl: 980, viabilityPct: 76, volumeMl: 5.8, pH: 6.9,
+    colorAppearance: "White", result: "Pass",
+  },
+  {
+    id: "SQT-003", collectionId: "SC-003", bullId: "C-2003",
+    testDate: "2026-05-08", testedBy: "Lab Tech Mwale",
+    totalMotilityPct: 52, progressiveMotilityPct: 40, morphologyNormalPct: 55,
+    concentrationMPerMl: 620, viabilityPct: 60, volumeMl: 4.1, pH: 7.0,
+    colorAppearance: "Yellowish", result: "Marginal", notes: "Borderline motility — recommend re-test",
+  },
+];
+
+// ---- Semen Batches ----------------------------------------------------------
+
+export const semenBatches: SemenBatch[] = [
+  {
+    id: "SB-001", collectionId: "SC-001", bullId: "C-2001",
+    batchNo: "BTH-2026-001", processingDate: "2026-04-16",
+    processor: "AI Tech Moyo", diluentUsed: "Tris-egg-yolk", extensionRatio: "1:4",
+    glycerolPct: 7, equilibrationTimeMin: 120, packagingType: "0.25ml",
+    totalStrawsFilled: 160, strawsAccepted: 152, strawsRejected: 8,
+    status: "Released", releaseDate: "2026-04-23",
+  },
+  {
+    id: "SB-002", collectionId: "SC-002", bullId: "C-2002",
+    batchNo: "BTH-2026-002", processingDate: "2026-04-22",
+    processor: "AI Tech Moyo", diluentUsed: "Tris-egg-yolk", extensionRatio: "1:4",
+    glycerolPct: 7, equilibrationTimeMin: 120, packagingType: "0.5ml",
+    totalStrawsFilled: 120, strawsAccepted: 114, strawsRejected: 6,
+    status: "Released", releaseDate: "2026-04-29",
+  },
+  {
+    id: "SB-003", collectionId: "SC-003", bullId: "C-2003",
+    batchNo: "BTH-2026-003", processingDate: "2026-05-08",
+    processor: "Dr. Chisamba", diluentUsed: "AndroMed", extensionRatio: "1:3",
+    glycerolPct: 6, equilibrationTimeMin: 90, packagingType: "0.25ml",
+    totalStrawsFilled: 80, strawsAccepted: 68, strawsRejected: 12,
+    status: "Quarantine", notes: "Awaiting post-thaw QC clearance",
+  },
+];
+
+// ---- Semen Batch Quality ----------------------------------------------------
+
+export const semenBatchQuality: SemenBatchQuality[] = [
+  {
+    id: "SBQ-001", batchId: "SB-001", testDate: "2026-04-23",
+    testedBy: "Dr. Chisamba",
+    postThawMotilityPct: 54, postThawProgressivePct: 45, postThawMorphologyPct: 70,
+    thawProtocol: "37°C water bath, 30 seconds",
+    result: "Approved", notes: "Post-thaw meets ICAR standards",
+  },
+  {
+    id: "SBQ-002", batchId: "SB-002", testDate: "2026-04-29",
+    testedBy: "Lab Tech Mwale",
+    postThawMotilityPct: 48, postThawProgressivePct: 38, postThawMorphologyPct: 65,
+    thawProtocol: "37°C water bath, 30 seconds",
+    result: "Conditional", notes: "Marginal motility — limit to first insemination use",
+  },
+];
+
+// ---- Nitrogen Tanks ---------------------------------------------------------
+
+export const nitrogenTanks: NitrogenTank[] = [
+  {
+    id: "TK-001", name: "Tank Alpha", serialNumber: "MVE-2022-ZW-0041",
+    manufacturer: "Chart MVE", model: "XC 47/11-6",
+    capacityLiters: 47, location: "Storage Room A – ZARC Harare",
+    purchaseDate: "2022-03-15", lastRefillDate: "2026-06-01", nextRefillDue: "2026-07-01",
+    nitrogenLevelPct: 68, temperatureC: -196, status: "Active", canisterSlots: 11,
+  },
+  {
+    id: "TK-002", name: "Tank Beta", serialNumber: "MVE-2023-ZW-0082",
+    manufacturer: "Chart MVE", model: "XC 47/11-6",
+    capacityLiters: 47, location: "Storage Room A – ZARC Harare",
+    purchaseDate: "2023-01-20", lastRefillDate: "2026-05-28", nextRefillDue: "2026-06-28",
+    nitrogenLevelPct: 42, temperatureC: -196, status: "Active", canisterSlots: 11,
+    notes: "Level low — refill due",
+  },
+  {
+    id: "TK-003", name: "Tank Gamma", serialNumber: "BIO-2020-ZW-0013",
+    manufacturer: "Cryotherm", model: "Biosafe 35",
+    capacityLiters: 35, location: "Field Station – Bindura",
+    purchaseDate: "2020-07-10", lastRefillDate: "2026-05-10", nextRefillDue: "2026-07-10",
+    nitrogenLevelPct: 75, temperatureC: -196, status: "Active", canisterSlots: 6,
+  },
+];
+
+// ---- Tank Canisters ---------------------------------------------------------
+
+export const tankCanisters: TankCanister[] = [
+  {
+    id: "CAN-001", tankId: "TK-001", code: "CAN-A1", color: "Red",
+    gobletCapacity: 500, bullId: "C-2001",
+    description: "Thunder – 2026 collection straws", currentStrawCount: 152, status: "Active",
+  },
+  {
+    id: "CAN-002", tankId: "TK-001", code: "CAN-A2", color: "Blue",
+    gobletCapacity: 500, bullId: "C-2002",
+    description: "Atlas – 2026 collection straws", currentStrawCount: 114, status: "Active",
+  },
+  {
+    id: "CAN-003", tankId: "TK-002", code: "CAN-B1", color: "Green",
+    gobletCapacity: 500, bullId: "C-2003",
+    description: "Titan – 2026 collection (in quarantine)", currentStrawCount: 68, status: "Sealed",
+  },
+  {
+    id: "CAN-004", tankId: "TK-002", code: "CAN-B2", color: "Yellow",
+    gobletCapacity: 500,
+    description: "Mixed imported straws", currentStrawCount: 0, status: "Empty",
+  },
+  {
+    id: "CAN-005", tankId: "TK-003", code: "CAN-C1", color: "White",
+    gobletCapacity: 300,
+    description: "Bindura field station stock", currentStrawCount: 45, status: "Active",
+  },
+];
+
+// ---- Semen Straws -----------------------------------------------------------
+
+export const semenStraws: SemenStraw[] = [
+  {
+    id: "SS-001", batchId: "SB-001", bullId: "C-2001", serialNumber: "TK01-CA1-0001",
+    strawType: "0.25ml", colorCode: "Red", doseMillion: 20,
+    tankId: "TK-001", canisterId: "CAN-001", gobletPosition: "G1-R1",
+    storedDate: "2026-04-16", expiryDate: "2029-04-16", status: "In Stock",
+  },
+  {
+    id: "SS-002", batchId: "SB-001", bullId: "C-2001", serialNumber: "TK01-CA1-0002",
+    strawType: "0.25ml", colorCode: "Red", doseMillion: 20,
+    tankId: "TK-001", canisterId: "CAN-001", gobletPosition: "G1-R2",
+    storedDate: "2026-04-16", expiryDate: "2029-04-16", status: "Dispatched",
+    dispatchedOn: "2026-06-10",
+  },
+  {
+    id: "SS-003", batchId: "SB-002", bullId: "C-2002", serialNumber: "TK01-CA2-0001",
+    strawType: "0.5ml", colorCode: "Blue", doseMillion: 25,
+    tankId: "TK-001", canisterId: "CAN-002", gobletPosition: "G2-R1",
+    storedDate: "2026-04-22", expiryDate: "2029-04-22", status: "In Stock",
+  },
+  {
+    id: "SS-004", batchId: "SB-003", bullId: "C-2003", serialNumber: "TK02-CB1-0001",
+    strawType: "0.25ml", colorCode: "Green", doseMillion: 15,
+    tankId: "TK-002", canisterId: "CAN-003", gobletPosition: "G1-R1",
+    storedDate: "2026-05-08", status: "Quarantined",
+  },
+  {
+    id: "SS-005", batchId: "SB-001", bullId: "C-2001", serialNumber: "TK01-CA1-0005",
+    strawType: "0.25ml", colorCode: "Red", doseMillion: 20,
+    tankId: "TK-001", canisterId: "CAN-001", gobletPosition: "G1-R5",
+    storedDate: "2026-04-16", expiryDate: "2029-04-16", status: "Used",
+    dispatchedOn: "2026-05-20",
+  },
+];
+
+// ---- Straw Storage Log ------------------------------------------------------
+
+export const strawStorageLog: StrawStorage[] = [
+  {
+    id: "STS-001", strawId: "SS-002", tankId: "TK-001", canisterId: "CAN-001",
+    gobletPosition: "G1-R2", storedDate: "2026-04-16", storedBy: "AI Tech Moyo",
+  },
+  {
+    id: "STS-002", strawId: "SS-004", tankId: "TK-002", canisterId: "CAN-003",
+    gobletPosition: "G1-R1", storedDate: "2026-05-08", storedBy: "Dr. Chisamba",
+    reason: "Quarantine placement — awaiting batch QC clearance",
+  },
+];
+
+// ---- Pedigrees --------------------------------------------------------------
+
+export const pedigrees: Pedigree[] = [
+  {
+    id: "PED-001", cattleId: "C-1001", sireId: "C-2001", damId: "C-1002",
+    paternalGrandsireId: "C-2002",
+    breedComposition: { "Holstein": 62.5, "Friesian": 37.5 },
+    registrationNo: "ZCPA-2024-00142", registrationBody: "Zimbabwe Cattle Producers Association",
+    issueDate: "2024-03-15", expiryDate: "2029-03-15", isVerified: true,
+    blockchainTxId: "0xabc123def456...", status: "Registered",
+  },
+  {
+    id: "PED-002", cattleId: "C-1003", sireId: "C-2002", damId: "C-1004",
+    breedComposition: { "Angus": 75, "Simmental": 25 },
+    registrationNo: "ZCPA-2024-00158", registrationBody: "Zimbabwe Cattle Producers Association",
+    issueDate: "2024-05-20", isVerified: false,
+    status: "Pending", notes: "DNA verification in progress",
+  },
+  {
+    id: "PED-003", cattleId: "C-2001", sireId: "C-2003", damId: "C-1005",
+    paternalGrandsireId: "C-2002",
+    breedComposition: { "Simmental": 50, "Holstein": 50 },
+    registrationNo: "ZCPA-2022-00089", registrationBody: "Zimbabwe Cattle Producers Association",
+    issueDate: "2022-08-10", expiryDate: "2027-08-10", isVerified: true,
+    status: "Registered",
+  },
+];
+
+// ---- Genomic Records --------------------------------------------------------
+
+export const genomicRecords: GenomicRecord[] = [
+  {
+    id: "GEN-001", cattleId: "C-2001", testDate: "2025-11-10",
+    laboratory: "Neogen GeneSeek", snpPanel: "HD 777K",
+    dnaSource: "Semen", parentageVerified: true,
+    breedComposition: { "Simmental": 50, "Holstein": 50 },
+    milkEpd: 320, fatEpd: 0.08, proteinEpd: 0.12,
+    fertilityIndex: 78, conformationScore: 84,
+    inbreedingCoefficient: 3.2, geneticMeritIndex: 112,
+    certificateNo: "GEN-ZW-2025-0041", status: "Completed",
+  },
+  {
+    id: "GEN-002", cattleId: "C-1001", testDate: "2025-09-05",
+    laboratory: "Zoetis Genetics", snpPanel: "LD 7K",
+    dnaSource: "Hair follicle", parentageVerified: true,
+    breedComposition: { "Holstein": 62.5, "Friesian": 37.5 },
+    milkEpd: 580, fatEpd: 0.06, proteinEpd: 0.10,
+    fertilityIndex: 65, conformationScore: 72,
+    inbreedingCoefficient: 2.8, geneticMeritIndex: 98,
+    status: "Completed",
+  },
+  {
+    id: "GEN-003", cattleId: "C-2002", testDate: "2026-02-14",
+    laboratory: "Neogen GeneSeek", snpPanel: "LD 7K",
+    dnaSource: "Blood", parentageVerified: false,
+    breedComposition: { "Angus": 75, "Simmental": 25 },
+    fertilityIndex: 70, conformationScore: 68,
+    status: "Pending", notes: "Parentage samples from sire pending submission",
+  },
+];
+
+// ---- Farmer Cattle (third-party farm animals registered for AI) --------------
+
+export const farmerCattle: FarmerCattle[] = [
+  { id: "FC-001", farmerId: "FR-001", farmId: "FM-001", tagNumber: "GF-COW-001", name: "Daisy",     breed: "Holstein-Friesian", sex: "Female", dateOfBirth: "2021-03-15", color: "Black & White", weightKg: 520, lactationStatus: "Lactating",  registeredDate: "2025-01-10", registeredByAgentId: "SA-001", rfidTag: "982000360057001", isActive: true },
+  { id: "FC-002", farmerId: "FR-001", farmId: "FM-001", tagNumber: "GF-COW-002", name: "Bessie",    breed: "Jersey",            sex: "Female", dateOfBirth: "2020-07-22", color: "Brown",          weightKg: 430, lactationStatus: "Pregnant",   registeredDate: "2025-01-10", registeredByAgentId: "SA-001", rfidTag: "982000360057002", isActive: true },
+  { id: "FC-003", farmerId: "FR-001", farmId: "FM-001", tagNumber: "GF-COW-003", name: "Rose",      breed: "Shorthorn",         sex: "Female", dateOfBirth: "2022-01-05", color: "Roan",           weightKg: 480, lactationStatus: "Open",       registeredDate: "2025-02-20", registeredByAgentId: "SA-001", isActive: true },
+  { id: "FC-004", farmerId: "FR-002", farmId: "FM-002", tagNumber: "MB-COW-001", name: "Luna",      breed: "Holstein-Friesian", sex: "Female", dateOfBirth: "2021-11-18", color: "Black & White",  weightKg: 540, lactationStatus: "Pregnant",   registeredDate: "2025-03-15", registeredByAgentId: "SA-002", rfidTag: "982000360058001", isActive: true },
+  { id: "FC-005", farmerId: "FR-002", farmId: "FM-002", tagNumber: "MB-COW-002", name: "Star",      breed: "Simmental",         sex: "Female", dateOfBirth: "2020-09-10", color: "Yellow & White", weightKg: 580, lactationStatus: "Dry",        registeredDate: "2025-03-15", registeredByAgentId: "SA-002", rfidTag: "982000360058002", isActive: true },
+  { id: "FC-006", farmerId: "FR-002", farmId: "FM-002", tagNumber: "MB-COW-003", name: "Pinky",     breed: "Angus Cross",       sex: "Female", dateOfBirth: "2023-02-28", color: "Black",          weightKg: 390, lactationStatus: "Open",       registeredDate: "2025-04-01", registeredByAgentId: "SA-002", isActive: true },
+  { id: "FC-007", farmerId: "FR-003", farmId: "FM-003", tagNumber: "HV-COW-001", name: "Amber",     breed: "Brahman Cross",     sex: "Female", dateOfBirth: "2020-05-12", color: "Light Red",      weightKg: 460, lactationStatus: "Lactating",  registeredDate: "2025-05-10", registeredByAgentId: "SA-003", rfidTag: "982000360059001", isActive: true },
+  { id: "FC-008", farmerId: "FR-003", farmId: "FM-003", tagNumber: "HV-COW-002", name: "Clover",    breed: "Nguni",             sex: "Female", dateOfBirth: "2019-12-01", color: "Speckled",       weightKg: 390, lactationStatus: "Open",       registeredDate: "2025-05-10", registeredByAgentId: "SA-003", isActive: true },
+  { id: "FC-009", farmerId: "FR-004", farmId: "FM-003", tagNumber: "HV-COW-003", name: "Goldie",    breed: "Holstein-Friesian", sex: "Female", dateOfBirth: "2022-06-30", color: "Black & White",  weightKg: 510, lactationStatus: "Open",       registeredDate: "2025-06-01", registeredByAgentId: "SA-003", isActive: true },
+  { id: "FC-010", farmerId: "FR-001", farmId: "FM-001", tagNumber: "GF-COW-004", name: "Nora",      breed: "Brown Swiss",       sex: "Female", dateOfBirth: "2021-08-14", color: "Brown-Grey",     weightKg: 555, lactationStatus: "Open",       registeredDate: "2025-06-10", registeredByAgentId: "SA-001", isActive: true },
+];
+
+// ---- Distribution Points (DPs) ----------------------------------------------
+
+export const distributionPoints: DistributionPoint[] = [
+  {
+    id: "DP-001", name: "Harare Central DP", code: "HCD1",
+    hierarchyNodeId: "HN-014", managerId: "TM-007",
+    address: "15 Samora Machel Ave, Harare", district: "Harare Urban",
+    lat: -17.8310, lng: 31.0495, phone: "+263-77-300-0001",
+    contactPerson: "Tatenda Mhaka", nitrogenCapacityLiters: 50,
+    currentNitrogenLiters: 38, maxStrawCapacity: 500, currentStrawCount: 320,
+    status: "Active", lastNitrogenRefill: "2026-06-10", nextRefillDue: "2026-07-10",
+    notes: "Main Harare depot. Serves Harare Urban and East beats.",
+  },
+  {
+    id: "DP-002", name: "Bindura DP", code: "BND1",
+    hierarchyNodeId: "HN-016", managerId: "TM-008",
+    address: "22 Old Bindura Road, Bindura", district: "Bindura",
+    lat: -17.3055, lng: 31.3410, phone: "+263-77-300-0002",
+    contactPerson: "Rumbi Chivanda", nitrogenCapacityLiters: 35,
+    currentNitrogenLiters: 22, maxStrawCapacity: 350, currentStrawCount: 185,
+    status: "Active", lastNitrogenRefill: "2026-06-05", nextRefillDue: "2026-07-05",
+    notes: "Serves Bindura Central and surrounding beats.",
+  },
+  {
+    id: "DP-003", name: "Marondera DP", code: "MRN1",
+    hierarchyNodeId: "HN-017", managerId: "TM-008",
+    address: "8 Marondera Industrial Road, Marondera", district: "Marondera",
+    lat: -18.1880, lng: 31.5540, phone: "+263-77-300-0003",
+    contactPerson: "Rumbi Chivanda", nitrogenCapacityLiters: 30,
+    currentNitrogenLiters: 14, maxStrawCapacity: 280, currentStrawCount: 92,
+    status: "Active", lastNitrogenRefill: "2026-05-28", nextRefillDue: "2026-06-28",
+    notes: "Nitrogen level approaching refill threshold.",
+  },
+  {
+    id: "DP-004", name: "Bulawayo DP", code: "BWY1",
+    hierarchyNodeId: "HN-019", managerId: "TM-009",
+    address: "41 Fort Street, Bulawayo", district: "Bulawayo",
+    lat: -20.1545, lng: 28.5862, phone: "+263-77-300-0004",
+    contactPerson: "Blessing Sithole", nitrogenCapacityLiters: 40,
+    currentNitrogenLiters: 30, maxStrawCapacity: 400, currentStrawCount: 210,
+    status: "Active", lastNitrogenRefill: "2026-06-12", nextRefillDue: "2026-07-12",
+  },
+];
+
+// ---- DP Straw Stock ---------------------------------------------------------
+
+export const dpStrawStocks: DPStrawStock[] = [
+  { id: "DPSS-001", dpId: "DP-001", semenCatalogId: "SC-001", batchId: "SB-001", quantityReceived: 120, quantityOnHand: 85, quantityIssued: 35, lastReceivedDate: "2026-05-20", notes: "Thunder (Simmental)" },
+  { id: "DPSS-002", dpId: "DP-001", semenCatalogId: "SC-002", batchId: "SB-002", quantityReceived: 100, quantityOnHand: 72, quantityIssued: 28, lastReceivedDate: "2026-05-22", notes: "Atlas (Angus)" },
+  { id: "DPSS-003", dpId: "DP-001", semenCatalogId: "SC-003", quantityReceived: 80,  quantityOnHand: 48, quantityIssued: 32, lastReceivedDate: "2026-06-01" },
+  { id: "DPSS-004", dpId: "DP-002", semenCatalogId: "SC-001", batchId: "SB-001", quantityReceived: 90,  quantityOnHand: 60, quantityIssued: 30, lastReceivedDate: "2026-05-25" },
+  { id: "DPSS-005", dpId: "DP-002", semenCatalogId: "SC-004", quantityReceived: 70,  quantityOnHand: 55, quantityIssued: 15, lastReceivedDate: "2026-06-03" },
+  { id: "DPSS-006", dpId: "DP-003", semenCatalogId: "SC-002", batchId: "SB-002", quantityReceived: 60,  quantityOnHand: 42, quantityIssued: 18, lastReceivedDate: "2026-05-30" },
+  { id: "DPSS-007", dpId: "DP-004", semenCatalogId: "SC-005", quantityReceived: 110, quantityOnHand: 78, quantityIssued: 32, lastReceivedDate: "2026-06-05" },
+];
+
+// ---- Straw Dispatches -------------------------------------------------------
+
+export const strawDispatches: StrawDispatch[] = [
+  { id: "SD-001", dispatchDate: "2026-05-20", fromType: "MainStore", toDpId: "DP-001", semenCatalogId: "SC-001", batchId: "SB-001", quantityDispatched: 120, quantityReceived: 120, status: "Received", dispatchedBy: "Lab Tech Moyo", receivedBy: "Tatenda Mhaka", dispatchedAt: "2026-05-20T09:00:00", receivedAt: "2026-05-20T14:30:00" },
+  { id: "SD-002", dispatchDate: "2026-05-22", fromType: "MainStore", toDpId: "DP-001", semenCatalogId: "SC-002", batchId: "SB-002", quantityDispatched: 100, quantityReceived: 100, status: "Received", dispatchedBy: "Lab Tech Moyo", receivedBy: "Tatenda Mhaka", dispatchedAt: "2026-05-22T10:00:00", receivedAt: "2026-05-22T15:00:00" },
+  { id: "SD-003", dispatchDate: "2026-05-25", fromType: "MainStore", toDpId: "DP-002", semenCatalogId: "SC-001", batchId: "SB-001", quantityDispatched: 90,  quantityReceived: 90,  status: "Received", dispatchedBy: "Dr. Chisamba",   receivedBy: "Rumbi Chivanda",  dispatchedAt: "2026-05-25T08:00:00", receivedAt: "2026-05-25T13:00:00" },
+  { id: "SD-004", dispatchDate: "2026-06-15", fromType: "MainStore", toDpId: "DP-003", semenCatalogId: "SC-003", quantityDispatched: 60,  quantityReceived: 60,  status: "Received", dispatchedBy: "Lab Tech Moyo", receivedBy: "Rumbi Chivanda",  dispatchedAt: "2026-06-15T09:30:00", receivedAt: "2026-06-15T14:00:00" },
+  { id: "SD-005", dispatchDate: "2026-06-20", fromType: "MainStore", toDpId: "DP-004", semenCatalogId: "SC-005", quantityDispatched: 110, status: "In Transit",  dispatchedBy: "Lab Tech Moyo", dispatchedAt: "2026-06-20T08:00:00", notes: "En route to Bulawayo via courier" },
+];
+
+// ---- Agent Straw Issues (Flask / Field Inventory) ---------------------------
+
+export const agentStrawIssues: AgentStrawIssue[] = [
+  { id: "ASI-001", issueDate: "2026-05-21", dpId: "DP-001", agentId: "SA-001", semenCatalogId: "SC-001", batchId: "SB-001", quantityIssued: 20, quantityUsed: 18, quantityReturned: 2, quantityWasted: 0, status: "Closed", closedDate: "2026-06-05" },
+  { id: "ASI-002", issueDate: "2026-05-23", dpId: "DP-001", agentId: "SA-001", semenCatalogId: "SC-002", quantityIssued: 15, quantityUsed: 12, quantityReturned: 2, quantityWasted: 1, status: "Closed", closedDate: "2026-06-10", notes: "1 straw thawed but cow not serviced (restrained)." },
+  { id: "ASI-003", issueDate: "2026-05-26", dpId: "DP-002", agentId: "SA-002", semenCatalogId: "SC-001", batchId: "SB-001", quantityIssued: 25, quantityUsed: 20, quantityReturned: 5, quantityWasted: 0, status: "Closed", closedDate: "2026-06-15" },
+  { id: "ASI-004", issueDate: "2026-06-12", dpId: "DP-001", agentId: "SA-001", semenCatalogId: "SC-003", quantityIssued: 18, quantityUsed: 10, quantityReturned: 0, quantityWasted: 0, status: "Open",   notes: "Agent on active field rounds." },
+  { id: "ASI-005", issueDate: "2026-06-14", dpId: "DP-002", agentId: "SA-002", semenCatalogId: "SC-004", quantityIssued: 12, quantityUsed: 7,  quantityReturned: 0, quantityWasted: 0, status: "Open" },
+  { id: "ASI-006", issueDate: "2026-06-18", dpId: "DP-003", agentId: "SA-003", semenCatalogId: "SC-002", batchId: "SB-002", quantityIssued: 10, quantityUsed: 6,  quantityReturned: 0, quantityWasted: 0, status: "Open" },
+];
+
+// ---- Insemination Events ----------------------------------------------------
+
+export const inseminationEvents: InseminationEvent[] = [
+  { id: "IE-001", inseminationDate: "2026-05-22", inseminationTime: "07:30", farmerCattleId: "FC-001", farmId: "FM-001", farmerId: "FR-001", agentId: "SA-001", semenCatalogId: "SC-001", batchId: "SB-001", dpId: "DP-001", agentStrawIssueId: "ASI-001", serviceMethod: "Cervical", heatConfirmedBy: "IoT", serviceFeeUsd: 15, paymentStatus: "Paid",    result: "Pregnant",    pdScheduledDate: "2026-06-21", notes: "High confidence heat alert from collar." },
+  { id: "IE-002", inseminationDate: "2026-05-24", inseminationTime: "08:00", farmerCattleId: "FC-002", farmId: "FM-001", farmerId: "FR-001", agentId: "SA-001", semenCatalogId: "SC-002", dpId: "DP-001", agentStrawIssueId: "ASI-002", serviceMethod: "Trans-Cervical", heatConfirmedBy: "Visual", serviceFeeUsd: 15, paymentStatus: "Paid", result: "Pregnant",    pdScheduledDate: "2026-06-23" },
+  { id: "IE-003", inseminationDate: "2026-05-27", inseminationTime: "09:15", farmerCattleId: "FC-004", farmId: "FM-002", farmerId: "FR-002", agentId: "SA-002", semenCatalogId: "SC-001", batchId: "SB-001", dpId: "DP-002", agentStrawIssueId: "ASI-003", serviceMethod: "Cervical", heatConfirmedBy: "IoT", serviceFeeUsd: 15, paymentStatus: "Paid", result: "Open",        pdScheduledDate: "2026-06-26", notes: "Cow did not conceive — repeat service scheduled." },
+  { id: "IE-004", inseminationDate: "2026-05-28", inseminationTime: "07:45", farmerCattleId: "FC-005", farmId: "FM-002", farmerId: "FR-002", agentId: "SA-002", semenCatalogId: "SC-001", batchId: "SB-001", dpId: "DP-002", agentStrawIssueId: "ASI-003", serviceMethod: "Cervical", heatConfirmedBy: "Manual", serviceFeeUsd: 15, paymentStatus: "Pending", result: "Pregnant", pdScheduledDate: "2026-06-27" },
+  { id: "IE-005", inseminationDate: "2026-06-13", inseminationTime: "06:50", farmerCattleId: "FC-003", farmId: "FM-001", farmerId: "FR-001", agentId: "SA-001", semenCatalogId: "SC-003", dpId: "DP-001", agentStrawIssueId: "ASI-004", serviceMethod: "Trans-Cervical", heatConfirmedBy: "Visual", serviceFeeUsd: 15, paymentStatus: "Pending", result: "Pending PD", pdScheduledDate: "2026-07-13" },
+  { id: "IE-006", inseminationDate: "2026-06-15", inseminationTime: "08:20", farmerCattleId: "FC-006", farmId: "FM-002", farmerId: "FR-002", agentId: "SA-002", semenCatalogId: "SC-004", dpId: "DP-002", agentStrawIssueId: "ASI-005", serviceMethod: "Cervical", heatConfirmedBy: "IoT", serviceFeeUsd: 15, paymentStatus: "Pending", result: "Pending PD", pdScheduledDate: "2026-07-15" },
+  { id: "IE-007", inseminationDate: "2026-06-19", inseminationTime: "07:10", farmerCattleId: "FC-007", farmId: "FM-003", farmerId: "FR-003", agentId: "SA-003", semenCatalogId: "SC-002", dpId: "DP-003", agentStrawIssueId: "ASI-006", serviceMethod: "Cervical", heatConfirmedBy: "Manual", serviceFeeUsd: 15, paymentStatus: "Pending", result: "Pending PD", pdScheduledDate: "2026-07-19" },
+  { id: "IE-008", inseminationDate: "2026-06-21", inseminationTime: "09:00", farmerCattleId: "FC-010", farmId: "FM-001", farmerId: "FR-001", agentId: "SA-001", semenCatalogId: "SC-001", dpId: "DP-001", agentStrawIssueId: "ASI-004", serviceMethod: "Cervical", heatConfirmedBy: "IoT", serviceFeeUsd: 15, paymentStatus: "Pending", result: "Pending PD", pdScheduledDate: "2026-07-21", notes: "Linked to heat alert HD-001." },
+];
+
+// ---- Pregnancy Diagnoses ----------------------------------------------------
+
+export const pregnancyDiagnoses: PregnancyDiagnosis[] = [
+  { id: "PD-001", inseminationEventId: "IE-001", farmerCattleId: "FC-001", farmId: "FM-001", diagnosisDate: "2026-06-21", daysAfterService: 30, method: "Ultrasound", result: "Pregnant", conductedBy: "Dr. Mensah", agentId: "SA-001", estimatedCalvingDate: "2027-03-05", notes: "Single foetus confirmed at 30-day check." },
+  { id: "PD-002", inseminationEventId: "IE-002", farmerCattleId: "FC-002", farmId: "FM-001", diagnosisDate: "2026-06-23", daysAfterService: 30, method: "Rectal Palpation", result: "Pregnant", conductedBy: "Dr. Mensah", agentId: "SA-001", estimatedCalvingDate: "2027-03-07" },
+  { id: "PD-003", inseminationEventId: "IE-003", farmerCattleId: "FC-004", farmId: "FM-002", diagnosisDate: "2026-06-26", daysAfterService: 30, method: "Ultrasound", result: "Open", conductedBy: "Dr. Chisamba", agentId: "SA-002", repeatServiceScheduled: true, repeatServiceDate: "2026-07-10", notes: "Open — Amina scheduled repeat service." },
+  { id: "PD-004", inseminationEventId: "IE-004", farmerCattleId: "FC-005", farmId: "FM-002", diagnosisDate: "2026-06-27", daysAfterService: 30, method: "Blood Test", result: "Twins", conductedBy: "Dr. Chisamba", agentId: "SA-002", estimatedCalvingDate: "2027-03-09", notes: "Twin pregnancy — monitor closely after 6 months." },
+  { id: "PD-005", inseminationEventId: "IE-001", farmerCattleId: "FC-001", farmId: "FM-001", diagnosisDate: "2026-07-21", daysAfterService: 60, method: "Ultrasound", result: "Pregnant", conductedBy: "Dr. Mensah", agentId: "SA-001", estimatedCalvingDate: "2027-03-05", notes: "60-day confirmation — foetus developing well." },
+];
+
+// ---- Farmer Calf Births -----------------------------------------------------
+
+export const farmerCalfBirths: FarmerCalfBirth[] = [
+  { id: "FCB-001", birthDate: "2026-06-08", farmerCattleId: "FC-002", inseminationEventId: "IE-002", farmerId: "FR-001", farmId: "FM-001", semenCatalogId: "SC-002", agentId: "SA-001", calfTagNumber: "GF-CALF-001", calfSex: "Female", calfBreed: "Holstein × Angus", calfWeightKg: 34, calfName: "Pixie",  outcome: "Live Birth",  calvingEase: "Easy", reportedByFarmer: true,  reportedByAgent: true,  notes: "Healthy calf. Dam recovered well." },
+  { id: "FCB-002", birthDate: "2026-06-15", farmerCattleId: "FC-004", inseminationEventId: "IE-003", farmerId: "FR-002", farmId: "FM-002", semenCatalogId: "SC-001", agentId: "SA-002", calfTagNumber: "MB-CALF-001", calfSex: "Male",   calfBreed: "Holstein × Simmental", calfWeightKg: 40, outcome: "Live Birth",  calvingEase: "Moderate", reportedByFarmer: true,  reportedByAgent: false, notes: "Bull calf, strong." },
+  { id: "FCB-003", birthDate: "2026-06-20", farmerCattleId: "FC-005", inseminationEventId: "IE-004", farmerId: "FR-002", farmId: "FM-002", semenCatalogId: "SC-001", agentId: "SA-002", calfTagNumber: "MB-CALF-002", calfSex: "Female", calfBreed: "Simmental × Simmental", calfWeightKg: 36, outcome: "Live Birth",  calvingEase: "Easy", reportedByFarmer: false, reportedByAgent: true,  notes: "Twin — second calf stillborn." },
+  { id: "FCB-004", birthDate: "2026-05-18", farmerCattleId: "FC-007", farmerId: "FR-003", farmId: "FM-003", semenCatalogId: "SC-003", agentId: "SA-003", calfTagNumber: "HV-CALF-001", calfSex: "Male",   calfBreed: "Brahman × Holstein", calfWeightKg: 32, outcome: "Live Birth",  calvingEase: "Easy", reportedByFarmer: true, reportedByAgent: false },
+];
+
+// ---- Incentive Settlements --------------------------------------------------
+
+export const incentiveSettlements: IncentiveSettlement[] = [
+  { id: "IS-001", agentId: "SA-001", periodStart: "2025-12-01", periodEnd: "2025-12-31", incentiveIds: ["SI-001", "SI-002"], totalEarnedUsd: 45.5, totalDeductionsUsd: 0, netPayableUsd: 45.5, status: "Paid", approvedBy: "James Moyo (NSM)", approvedDate: "2026-01-03", paidDate: "2026-01-05", paymentReference: "BANK-TXN-20260105" },
+  { id: "IS-002", agentId: "SA-002", periodStart: "2025-12-01", periodEnd: "2025-12-31", incentiveIds: ["SI-003"], totalEarnedUsd: 19.8, totalDeductionsUsd: 0, netPayableUsd: 19.8, status: "Approved", approvedBy: "James Moyo (NSM)", approvedDate: "2026-01-04", notes: "Awaiting payment processing." },
+  { id: "IS-003", agentId: "SA-001", periodStart: "2026-01-01", periodEnd: "2026-03-31", incentiveIds: ["SI-004", "SI-005"], totalEarnedUsd: 58, totalDeductionsUsd: 5, netPayableUsd: 53, status: "Draft", notes: "Q1 2026 settlement draft — pending NSM approval." },
+];

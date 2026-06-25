@@ -5,23 +5,29 @@ import Link from "next/link";
 import { PageHeader, StatCard, Card, CardHeader, Table, Th, Td, StatusBadge, Badge, PrimaryButton } from "@/components/ui";
 import { BarChart } from "@/components/charts";
 import { Icon } from "@/components/icons";
-import { Modal, FormGrid, FormButtons, DateField, SelectField, NumberField, TextAreaField, RowActions } from "@/components/forms";
+import { Modal, FormGrid, FormButtons, DateField, SelectField, NumberField, TextAreaField, RowActions, TextField } from "@/components/forms";
 import { useData } from "@/lib/store";
 import type { BirthRecord } from "@/lib/types";
 import { monthlyBirths, canBeDam, canBeSire, classTone } from "@/lib/data";
 import { formatDate } from "@/lib/format";
 
-// A newborn's class is recorded as Heifer (female) or Bull (male).
 const CALF_CLASS_OPTIONS = ["Heifer", "Bull"];
 const EASE_OPTIONS = ["Easy", "Assisted", "Difficult", "C-Section"];
 const OUTCOME_OPTIONS = ["Live", "Stillborn"];
 
+const BREEDS = [
+  "Holstein", "Jersey", "Angus", "Hereford", "Simmental",
+  "Brahman", "Charolais", "Limousin", "Friesian", "Mixed",
+];
+
 const emptyForm = {
-  calfId: "",
+  calfName: "",
+  calfBreed: "",
+  rfidTag: "",
   damId: "",
   sireId: "",
-  birthDate: "2026-06-07",
-  class: "Heifer",
+  birthDate: "2026-06-24",
+  class: "Heifer" as "Heifer" | "Bull",
   birthWeightKg: "",
   calvingEase: "Easy",
   outcome: "Live",
@@ -29,10 +35,11 @@ const emptyForm = {
 };
 
 export default function BirthHistoryPage() {
-  const { birthRecords, cattle, cattleLabel, addBirth, update, remove } = useData();
+  const { birthRecords, cattle, cattleLabel, addBirth, addBirthAndCalf, update, remove } = useData();
   const [open, setOpen] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [form, setForm] = useState(emptyForm);
+  const [calfRegistered, setCalfRegistered] = useState<{ name: string; id: string } | null>(null);
   const set = (k: keyof typeof emptyForm) => (v: string) => setForm((f) => ({ ...f, [k]: v }));
 
   const dams = useMemo(() => cattle.filter((c) => canBeDam(c.class)), [cattle]);
@@ -55,12 +62,15 @@ export default function BirthHistoryPage() {
 
   function openEdit(b: BirthRecord) {
     setEditingId(b.id);
+    const existingCalf = b.calfId !== "—" ? cattle.find(c => c.id === b.calfId) : null;
     setForm({
-      calfId: b.calfId === "—" ? "" : b.calfId,
+      calfName: existingCalf?.name ?? "",
+      calfBreed: existingCalf?.breed ?? "",
+      rfidTag: existingCalf?.rfidTag ?? "",
       damId: b.damId,
       sireId: b.sireId,
       birthDate: b.birthDate,
-      class: b.class,
+      class: b.class as "Heifer" | "Bull",
       birthWeightKg: String(b.birthWeightKg),
       calvingEase: b.calvingEase,
       outcome: b.outcome,
@@ -71,19 +81,65 @@ export default function BirthHistoryPage() {
 
   function submit(e: React.FormEvent) {
     e.preventDefault();
-    const payload = {
-      calfId: form.calfId.trim() || "—",
-      damId: form.damId,
-      sireId: form.sireId,
-      birthDate: form.birthDate,
-      class: form.class as BirthRecord["class"],
-      birthWeightKg: Number(form.birthWeightKg) || 0,
-      calvingEase: form.calvingEase as BirthRecord["calvingEase"],
-      outcome: form.outcome as BirthRecord["outcome"],
-      notes: form.notes.trim() || undefined,
-    };
-    if (editingId) update("birthRecords", editingId, payload);
-    else addBirth(payload);
+
+    if (editingId) {
+      // Edit: update birth record only — don't recreate cattle
+      update("birthRecords", editingId, {
+        damId: form.damId,
+        sireId: form.sireId,
+        birthDate: form.birthDate,
+        class: form.class as BirthRecord["class"],
+        birthWeightKg: Number(form.birthWeightKg) || 0,
+        calvingEase: form.calvingEase as BirthRecord["calvingEase"],
+        outcome: form.outcome as BirthRecord["outcome"],
+        notes: form.notes.trim() || undefined,
+      });
+    } else if (form.outcome === "Live" && form.calfName.trim()) {
+      // Live birth with name → atomically create cattle + birth record
+      const dam = cattle.find((c) => c.id === form.damId);
+      const registeredId = addBirthAndCalf(
+        {
+          damId: form.damId,
+          sireId: form.sireId,
+          birthDate: form.birthDate,
+          class: form.class as BirthRecord["class"],
+          birthWeightKg: Number(form.birthWeightKg) || 0,
+          calvingEase: form.calvingEase as BirthRecord["calvingEase"],
+          outcome: "Live",
+          notes: form.notes.trim() || undefined,
+        },
+        {
+          name: form.calfName.trim(),
+          breed: form.calfBreed.trim() || dam?.breed || "Mixed",
+          class: form.class,
+          dob: form.birthDate,
+          status: "Calf",
+          health: "Healthy",
+          weightKg: Number(form.birthWeightKg) || 0,
+          damId: form.damId,
+          sireId: form.sireId || undefined,
+          pasture: "Calf Barn",
+          farmId: dam?.farmId,
+          rfidTag: form.rfidTag.trim() || undefined,
+          acquisition: "Born on farm",
+        },
+      );
+      setCalfRegistered({ name: form.calfName.trim(), id: registeredId });
+    } else {
+      // Stillborn or unnamed live birth
+      addBirth({
+        calfId: "—",
+        damId: form.damId,
+        sireId: form.sireId,
+        birthDate: form.birthDate,
+        class: form.class as BirthRecord["class"],
+        birthWeightKg: Number(form.birthWeightKg) || 0,
+        calvingEase: form.calvingEase as BirthRecord["calvingEase"],
+        outcome: form.outcome as BirthRecord["outcome"],
+        notes: form.notes.trim() || undefined,
+      });
+    }
+
     setForm(emptyForm);
     setEditingId(null);
     setOpen(false);
@@ -93,7 +149,7 @@ export default function BirthHistoryPage() {
     <>
       <PageHeader
         title="Birth History"
-        description="Complete calving log with outcomes, weights and calving ease."
+        description="Complete calving log. Live births are automatically registered in the Cattle Registry."
         action={
           <PrimaryButton onClick={openAdd}>
             <Icon.plus width={16} height={16} />
@@ -101,6 +157,27 @@ export default function BirthHistoryPage() {
           </PrimaryButton>
         }
       />
+
+      {/* Calf registered banner */}
+      {calfRegistered && (
+        <div className="mb-4 flex items-center justify-between rounded-xl border border-green-200 bg-green-50 px-5 py-3.5">
+          <div className="flex items-center gap-2">
+            <Icon.baby width={18} height={18} className="text-green-600" />
+            <p className="text-sm font-medium text-green-800">
+              Calf <strong>&quot;{calfRegistered.name}&quot;</strong>
+              {calfRegistered.id ? (
+                <> registered as cattle <Link href={`/cattle/${calfRegistered.id}`} className="underline hover:text-green-900">{calfRegistered.id}</Link>.</>
+              ) : (
+                <> has been registered in the Cattle Registry.</>
+              )}{" "}
+              <Link href="/cattle" className="underline hover:text-green-900">View all →</Link>
+            </p>
+          </div>
+          <button onClick={() => setCalfRegistered(null)} className="ml-4 text-green-600 hover:text-green-800">
+            <Icon.close width={16} height={16} />
+          </button>
+        </div>
+      )}
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <StatCard label="Total Births" value={String(birthRecords.length)} iconName="baby" tone="green" />
@@ -141,7 +218,7 @@ export default function BirthHistoryPage() {
                 <Td>{formatDate(b.birthDate)}</Td>
                 <Td className="font-medium">
                   {b.calfId === "—" ? (
-                    <span className="text-muted">—</span>
+                    <span className="text-muted/40">—</span>
                   ) : (
                     <Link href={`/cattle/${b.calfId}`} className="text-brand-700 hover:underline">
                       {cattleLabel(b.calfId)}
@@ -150,12 +227,12 @@ export default function BirthHistoryPage() {
                 </Td>
                 <Td className="text-muted">{cattleLabel(b.damId)}</Td>
                 <Td className="text-muted">{cattleLabel(b.sireId)}</Td>
-                <Td>
-                  <Badge tone={classTone(b.class)}>{b.class}</Badge>
-                </Td>
+                <Td><Badge tone={classTone(b.class)}>{b.class}</Badge></Td>
                 <Td className="text-muted">{b.birthWeightKg} kg</Td>
                 <Td><StatusBadge status={b.calvingEase} /></Td>
-                <Td><StatusBadge status={b.outcome} /></Td>
+                <Td>
+                  <StatusBadge status={b.outcome} />
+                </Td>
                 <Td className="max-w-[16rem] whitespace-normal text-xs text-muted">{b.notes ?? "—"}</Td>
                 <Td>
                   <div className="flex justify-end">
@@ -171,40 +248,86 @@ export default function BirthHistoryPage() {
       <Modal
         open={open}
         onClose={() => setOpen(false)}
-        title={editingId ? "Edit Birth Record" : "Record Birth"}
-        description={editingId ? `Update ${editingId}.` : "Log a calving event."}
+        title={editingId ? "Edit Birth Record" : "Record Calving"}
+        description={
+          editingId
+            ? `Update ${editingId}.`
+            : form.outcome === "Live"
+            ? "Live births will be auto-registered in the Cattle Registry."
+            : "Record a stillborn calving event."
+        }
+        size="lg"
       >
-        <form onSubmit={submit} className="space-y-4 p-5">
-          <FormGrid>
-            <SelectField
-              label="Dam"
-              value={form.damId}
-              onChange={set("damId")}
-              options={dams.map((c) => ({ value: c.id, label: `${c.name} (${c.id})` }))}
-              required
-              placeholder="— Select dam —"
-            />
-            <SelectField
-              label="Sire"
-              value={form.sireId}
-              onChange={set("sireId")}
-              options={sires.map((c) => ({ value: c.id, label: `${c.name} (${c.id})` }))}
-              required
-              placeholder="— Select sire —"
-            />
-            <SelectField
-              label="Calf (if tagged)"
-              value={form.calfId}
-              onChange={set("calfId")}
-              options={cattle.map((c) => ({ value: c.id, label: `${c.name} (${c.id})` }))}
-              placeholder="— Not yet tagged —"
-            />
-            <DateField label="Birth Date" value={form.birthDate} onChange={set("birthDate")} required />
-            <SelectField label="Class" value={form.class} onChange={set("class")} options={CALF_CLASS_OPTIONS} required />
-            <NumberField label="Birth Weight (kg)" value={form.birthWeightKg} onChange={set("birthWeightKg")} required min={0} placeholder="e.g. 38" />
-            <SelectField label="Calving Ease" value={form.calvingEase} onChange={set("calvingEase")} options={EASE_OPTIONS} required />
-            <SelectField label="Outcome" value={form.outcome} onChange={set("outcome")} options={OUTCOME_OPTIONS} required />
-          </FormGrid>
+        <form onSubmit={submit} className="space-y-5 p-5">
+          {/* Parents */}
+          <div>
+            <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-muted">Parents</p>
+            <FormGrid>
+              <SelectField
+                label="Dam (Mother)"
+                value={form.damId}
+                onChange={set("damId")}
+                options={dams.map((c) => ({ value: c.id, label: `${c.name} (${c.id})` }))}
+                required
+                placeholder="— Select dam —"
+              />
+              <SelectField
+                label="Sire (Father)"
+                value={form.sireId}
+                onChange={set("sireId")}
+                options={sires.map((c) => ({ value: c.id, label: `${c.name} (${c.id})` }))}
+                required
+                placeholder="— Select sire —"
+              />
+            </FormGrid>
+          </div>
+
+          {/* Calving event */}
+          <div>
+            <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-muted">Calving Event</p>
+            <FormGrid>
+              <DateField label="Birth Date" value={form.birthDate} onChange={set("birthDate")} required />
+              <SelectField label="Outcome" value={form.outcome} onChange={set("outcome")} options={OUTCOME_OPTIONS} required />
+              <SelectField label="Calf Class" value={form.class} onChange={set("class")} options={CALF_CLASS_OPTIONS} required />
+              <NumberField label="Birth Weight (kg)" value={form.birthWeightKg} onChange={set("birthWeightKg")} required min={0} placeholder="e.g. 38" />
+              <SelectField label="Calving Ease" value={form.calvingEase} onChange={set("calvingEase")} options={EASE_OPTIONS} required />
+            </FormGrid>
+          </div>
+
+          {/* Calf registration — only for live births */}
+          {form.outcome === "Live" && (
+            <div className="rounded-xl border border-brand-200 bg-brand-50 p-4">
+              <p className="mb-3 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-brand-700">
+                <Icon.baby width={14} height={14} /> Calf Registration (Cattle Registry)
+              </p>
+              <FormGrid>
+                <TextField
+                  label="Calf Name"
+                  value={form.calfName}
+                  onChange={set("calfName")}
+                  required
+                  placeholder="e.g. Blossom"
+                />
+                <SelectField
+                  label="Breed"
+                  value={form.calfBreed}
+                  onChange={set("calfBreed")}
+                  options={BREEDS}
+                  placeholder="— Inherit from dam —"
+                />
+                <TextField
+                  label="RFID Tag (optional)"
+                  value={form.rfidTag}
+                  onChange={set("rfidTag")}
+                  placeholder="e.g. 716001100103002"
+                />
+              </FormGrid>
+              <p className="mt-2 text-[11px] text-brand-600">
+                The calf will be registered as a new cattle record with status <strong>Calf</strong>, assigned to the Calf Barn.
+              </p>
+            </div>
+          )}
+
           <TextAreaField label="Notes" value={form.notes} onChange={set("notes")} placeholder="Optional notes…" />
           <FormButtons onCancel={() => setOpen(false)} submitLabel={editingId ? "Save Changes" : "Record Birth"} />
         </form>

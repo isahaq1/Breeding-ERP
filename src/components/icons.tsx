@@ -231,6 +231,82 @@ export const Icon = {
       <path d="M8 15h5" />
     </svg>
   ),
+  wifi: (p: IconProps) => (
+    <svg {...base(p)}>
+      <path d="M5 12.55a11 11 0 0 1 14.08 0" />
+      <path d="M1.42 9a16 16 0 0 1 21.16 0" />
+      <path d="M8.53 16.11a6 6 0 0 1 6.95 0" />
+      <circle cx="12" cy="20" r="1" fill="currentColor" />
+    </svg>
+  ),
+  thermometer: (p: IconProps) => (
+    <svg {...base(p)}>
+      <path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z" />
+    </svg>
+  ),
+  activity: (p: IconProps) => (
+    <svg {...base(p)}>
+      <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+    </svg>
+  ),
+  zap: (p: IconProps) => (
+    <svg {...base(p)}>
+      <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+    </svg>
+  ),
+  battery: (p: IconProps) => (
+    <svg {...base(p)}>
+      <rect x="2" y="7" width="16" height="10" rx="2" />
+      <path d="M22 11v2" />
+      <path d="M6 11h4" />
+    </svg>
+  ),
+  history: (p: IconProps) => (
+    <svg {...base(p)}>
+      <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+      <path d="M3 3v5h5" />
+      <path d="M12 7v5l4 2" />
+    </svg>
+  ),
+  link: (p: IconProps) => (
+    <svg {...base(p)}>
+      <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+      <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
+    </svg>
+  ),
+  qrcode: (p: IconProps) => (
+    <svg {...base(p)}>
+      <rect x="3" y="3" width="7" height="7" rx="1" />
+      <rect x="14" y="3" width="7" height="7" rx="1" />
+      <rect x="3" y="14" width="7" height="7" rx="1" />
+      <path d="M14 14h3v3h-3zM17 17h3v3h-3zM14 20h3" />
+    </svg>
+  ),
+  flame: (p: IconProps) => (
+    <svg {...base(p)}>
+      <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z" />
+    </svg>
+  ),
+  network: (p: IconProps) => (
+    <svg {...base(p)}>
+      <circle cx="12" cy="5" r="2" />
+      <circle cx="5" cy="19" r="2" />
+      <circle cx="19" cy="19" r="2" />
+      <path d="M12 7v4M12 11l-5 6M12 11l5 6" />
+    </svg>
+  ),
+  shield: (p: IconProps) => (
+    <svg {...base(p)}>
+      <path d="M12 2L3 7v5c0 5.25 3.75 10.15 9 11.35C17.25 22.15 21 17.25 21 12V7L12 2z" />
+      <path d="M9 12l2 2 4-4" />
+    </svg>
+  ),
+  collection: (p: IconProps) => (
+    <svg {...base(p)}>
+      <path d="M3 6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6z" />
+      <path d="M3 14a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-2z" />
+    </svg>
+  ),
 };
 
 export type IconName = keyof typeof Icon;

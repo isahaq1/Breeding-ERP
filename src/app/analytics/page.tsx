@@ -1,15 +1,16 @@
+"use client";
+
+import { useMemo } from "react";
 import { PageHeader, StatCard, Card, CardHeader, Badge, StatusBadge } from "@/components/ui";
 import { LineChart, BarChart, Donut } from "@/components/charts";
 import {
   milkYield,
   monthlyBirths,
   breedDistribution,
-  breedingRecords,
-  birthRecords,
-  cattle,
   muzzlePrints,
 } from "@/lib/data";
-import { number } from "@/lib/format";
+import { number, currency } from "@/lib/format";
+import { useData } from "@/lib/store";
 
 const donutColors = ["#16a34a", "#22c55e", "#86efac", "#bbf7d0"];
 
@@ -126,6 +127,18 @@ function MuzzleSVG({ printHash }: { printHash?: string }) {
 }
 
 export default function AnalyticsPage() {
+  const {
+    breedingRecords,
+    birthRecords,
+    cattle,
+    inseminationEvents,
+    semenOrders,
+    semenCatalog,
+    semenBatches,
+    agentStrawIssues,
+    saleAgents,
+  } = useData();
+
   const confirmed = breedingRecords.filter((b) => b.result === "Confirmed Pregnant").length;
   const conception = Math.round((confirmed / breedingRecords.length) * 100);
   const liveBirths = birthRecords.filter((b) => b.outcome === "Live").length;
@@ -152,6 +165,130 @@ export default function AnalyticsPage() {
   const recentPrints = [...muzzlePrints]
     .sort((a, b) => b.capturedDate.localeCompare(a.capturedDate))
     .slice(0, 5);
+
+  // ── Section A: AI Semen Programme ──────────────────────────────────────────
+
+  const bullBarData = useMemo(() => {
+    const map: Record<string, { services: number; pregnancies: number; bullName: string }> = {};
+    for (const ev of inseminationEvents) {
+      const entry = map[ev.semenCatalogId] ?? { services: 0, pregnancies: 0, bullName: "" };
+      entry.services += 1;
+      if (ev.result === "Pregnant") entry.pregnancies += 1;
+      if (!entry.bullName) {
+        const cat = semenCatalog.find((c) => c.id === ev.semenCatalogId);
+        entry.bullName = cat?.bullName ?? ev.semenCatalogId;
+      }
+      map[ev.semenCatalogId] = entry;
+    }
+    return Object.values(map)
+      .filter((e) => e.services > 0)
+      .map((e) => ({
+        label: e.bullName.slice(0, 8),
+        value: Math.round((e.pregnancies / e.services) * 100),
+      }))
+      .sort((a, b) => b.value - a.value)
+      .slice(0, 8);
+  }, [inseminationEvents, semenCatalog]);
+
+  const aiOutcomeDonut = useMemo(() => {
+    const counts: Record<string, number> = {
+      Pregnant: 0,
+      Open: 0,
+      "Pending PD": 0,
+      "Repeat Service": 0,
+      Aborted: 0,
+    };
+    for (const ev of inseminationEvents) {
+      if (ev.result in counts) counts[ev.result] += 1;
+    }
+    const colorMap: Record<string, string> = {
+      Pregnant: "#16a34a",
+      Open: "#ef4444",
+      "Pending PD": "#f59e0b",
+      "Repeat Service": "#a855f7",
+      Aborted: "#9ca3af",
+    };
+    return Object.entries(counts)
+      .filter(([, v]) => v > 0)
+      .map(([label, value]) => ({ label, value, color: colorMap[label] }));
+  }, [inseminationEvents]);
+
+  // ── Section B: Semen Revenue & Financial KPIs ─────────────────────────────
+
+  const semenFinancials = useMemo(() => {
+    const totalRevenue = semenOrders.reduce((s, o) => s + o.totalAmountUsd, 0);
+    const collected = semenOrders
+      .filter((o) => o.paymentStatus === "Paid")
+      .reduce((s, o) => s + o.totalAmountUsd, 0);
+    const outstanding = semenOrders
+      .filter((o) => o.paymentStatus === "Unpaid" || o.paymentStatus === "Partial")
+      .reduce((s, o) => s + o.totalAmountUsd, 0);
+    const avgOrder = semenOrders.length > 0 ? totalRevenue / semenOrders.length : 0;
+    return { totalRevenue, collected, outstanding, avgOrder };
+  }, [semenOrders]);
+
+  const revenueByMonth = useMemo(() => {
+    const monthMap: Record<string, number> = {};
+    for (const o of semenOrders) {
+      const month = o.orderDate.slice(0, 7); // "2026-01"
+      monthMap[month] = (monthMap[month] ?? 0) + o.totalAmountUsd;
+    }
+    const sorted = Object.entries(monthMap).sort(([a], [b]) => a.localeCompare(b));
+    const last6 = sorted.slice(-6);
+    return last6.map(([month, value]) => ({
+      label: month.slice(5), // "01"
+      value,
+    }));
+  }, [semenOrders]);
+
+  // ── Section C: Semen Production Efficiency ────────────────────────────────
+
+  const batchYieldData = useMemo(() => {
+    return [...semenBatches]
+      .sort((a, b) => a.processingDate.localeCompare(b.processingDate))
+      .slice(-5);
+  }, [semenBatches]);
+
+  const agentUtilisation = useMemo(() => {
+    const map: Record<string, { issued: number; used: number; name: string }> = {};
+    for (const issue of agentStrawIssues) {
+      const entry = map[issue.agentId] ?? { issued: 0, used: 0, name: "" };
+      entry.issued += issue.quantityIssued;
+      entry.used += issue.quantityUsed;
+      if (!entry.name) {
+        const agent = saleAgents.find((a) => a.id === issue.agentId);
+        entry.name = agent ? `${agent.firstName} ${agent.lastName}`.slice(0, 10) : issue.agentId;
+      }
+      map[issue.agentId] = entry;
+    }
+    return Object.values(map)
+      .filter((e) => e.issued > 0)
+      .map((e) => ({
+        label: e.name,
+        value: Math.round((e.used / e.issued) * 100),
+      }));
+  }, [agentStrawIssues, saleAgents]);
+
+  // ── Section D: Herd Fertility Summary ─────────────────────────────────────
+
+  const ownBreedingMethodDonut = useMemo(() => {
+    const natural = breedingRecords.filter((b) => b.method === "Natural").length;
+    const ai = breedingRecords.filter((b) => b.method === "Artificial Insemination").length;
+    const et = breedingRecords.filter((b) => b.method === "Embryo Transfer").length;
+    return [
+      { label: "Natural", value: natural, color: "#16a34a" },
+      { label: "AI", value: ai, color: "#22c55e" },
+      { label: "ET", value: et, color: "#86efac" },
+    ].filter((d) => d.value > 0);
+  }, [breedingRecords]);
+
+  const calvingEaseData = useMemo(() => {
+    const ease: Record<string, number> = { Easy: 0, Assisted: 0, Difficult: 0, "C-Section": 0 };
+    for (const b of birthRecords) {
+      if (b.calvingEase in ease) ease[b.calvingEase] += 1;
+    }
+    return Object.entries(ease).map(([label, value]) => ({ label, value }));
+  }, [birthRecords]);
 
   return (
     <>
@@ -373,6 +510,181 @@ export default function AnalyticsPage() {
             </table>
           </div>
         </Card>
+      </div>
+
+      {/* ── Section A: AI Semen Programme ── */}
+      <div className="mt-8">
+        <p className="mb-4 text-[11px] font-bold uppercase tracking-wider text-muted/70">AI Semen Programme</p>
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+          {/* Bull Conception Rate Bar Chart */}
+          <Card>
+            <CardHeader title="Conception Rate by Bull" />
+            <div className="px-5 pb-5 pt-2">
+              {bullBarData.length > 0 ? (
+                <BarChart
+                  data={bullBarData}
+                  color="#16a34a"
+                  valueFormat={(n) => `${n}%`}
+                />
+              ) : (
+                <p className="py-8 text-center text-sm text-muted">No insemination data available.</p>
+              )}
+            </div>
+          </Card>
+
+          {/* AI Result Distribution */}
+          <Card>
+            <CardHeader title="AI Service Outcome Distribution" />
+            <div className="px-5 pb-5 pt-2 flex justify-center">
+              {aiOutcomeDonut.length > 0 ? (
+                <Donut data={aiOutcomeDonut} />
+              ) : (
+                <p className="py-8 text-center text-sm text-muted">No outcome data available.</p>
+              )}
+            </div>
+          </Card>
+        </div>
+      </div>
+
+      {/* ── Section B: Semen Programme Financial ── */}
+      <div className="mt-6">
+        <p className="mb-4 text-[11px] font-bold uppercase tracking-wider text-muted/70">Semen Programme — Financial</p>
+        <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+          <StatCard
+            label="Total Order Revenue"
+            value={currency(semenFinancials.totalRevenue)}
+            delta={0}
+            sublabel="all orders"
+            iconName="analytics"
+            tone="green"
+          />
+          <StatCard
+            label="Revenue Collected"
+            value={currency(semenFinancials.collected)}
+            delta={0}
+            sublabel="paid orders"
+            iconName="heart"
+            tone="blue"
+          />
+          <StatCard
+            label="Outstanding"
+            value={currency(semenFinancials.outstanding)}
+            delta={0}
+            sublabel="unpaid / partial"
+            iconName="report"
+            tone="purple"
+          />
+          <StatCard
+            label="Avg Order Value"
+            value={currency(semenFinancials.avgOrder)}
+            delta={0}
+            sublabel={`across ${semenOrders.length} orders`}
+            iconName="feed"
+            tone="green"
+          />
+        </div>
+        {revenueByMonth.length > 0 && (
+          <Card className="mt-4">
+            <CardHeader title="Revenue by Month (USD)" />
+            <div className="p-5">
+              <BarChart
+                data={revenueByMonth}
+                color="#16a34a"
+                valueFormat={(n) => currency(n)}
+              />
+            </div>
+          </Card>
+        )}
+      </div>
+
+      {/* ── Section C: Semen Production Efficiency ── */}
+      <div className="mt-6">
+        <p className="mb-4 text-[11px] font-bold uppercase tracking-wider text-muted/70">Laboratory — Production Efficiency</p>
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+          {/* Batch yield: accepted vs rejected straws per batch */}
+          <Card>
+            <CardHeader title="Batch Straw Yield (Accepted vs Rejected)" />
+            <div className="px-5 pb-5 pt-2">
+              {batchYieldData.length > 0 ? (
+                <div className="space-y-3">
+                  {batchYieldData.map((batch) => {
+                    const total = batch.totalStrawsFilled || 1;
+                    const acceptedPct = Math.round((batch.strawsAccepted / total) * 100);
+                    const rejectedPct = Math.round((batch.strawsRejected / total) * 100);
+                    return (
+                      <div key={batch.id}>
+                        <div className="mb-1 flex items-center justify-between text-xs">
+                          <span className="font-medium text-ink">{batch.batchNo}</span>
+                          <span className="text-muted">{batch.strawsAccepted} accepted / {batch.strawsRejected} rejected</span>
+                        </div>
+                        <div className="flex h-2 w-full overflow-hidden rounded-full bg-canvas">
+                          <div className="h-full bg-brand-500" style={{ width: `${acceptedPct}%` }} />
+                          <div className="h-full bg-red-400" style={{ width: `${rejectedPct}%` }} />
+                        </div>
+                      </div>
+                    );
+                  })}
+                  <div className="mt-2 flex items-center gap-4 text-[11px] text-muted">
+                    <span className="flex items-center gap-1"><span className="inline-block h-2 w-3 rounded-sm bg-brand-500" />Accepted</span>
+                    <span className="flex items-center gap-1"><span className="inline-block h-2 w-3 rounded-sm bg-red-400" />Rejected</span>
+                  </div>
+                </div>
+              ) : (
+                <p className="py-8 text-center text-sm text-muted">No batch data available.</p>
+              )}
+            </div>
+          </Card>
+
+          {/* Agent straw utilisation */}
+          <Card>
+            <CardHeader title="Agent Straw Utilisation (%)" />
+            <div className="px-5 pb-5 pt-2">
+              {agentUtilisation.length > 0 ? (
+                <BarChart
+                  data={agentUtilisation}
+                  color="#22c55e"
+                  valueFormat={(n) => `${n}%`}
+                />
+              ) : (
+                <p className="py-8 text-center text-sm text-muted">No agent straw data available.</p>
+              )}
+            </div>
+          </Card>
+        </div>
+      </div>
+
+      {/* ── Section D: Herd Fertility Summary ── */}
+      <div className="mt-6">
+        <p className="mb-4 text-[11px] font-bold uppercase tracking-wider text-muted/70">Herd Fertility</p>
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+          {/* Own herd breeding method donut */}
+          <Card>
+            <CardHeader title="Own Herd — Breeding Method" />
+            <div className="p-5 flex justify-center">
+              {ownBreedingMethodDonut.length > 0 ? (
+                <Donut data={ownBreedingMethodDonut} />
+              ) : (
+                <p className="py-8 text-center text-sm text-muted">No breeding records available.</p>
+              )}
+            </div>
+          </Card>
+
+          {/* Calving ease distribution */}
+          <Card>
+            <CardHeader title="Calving Ease Distribution" />
+            <div className="p-5">
+              {calvingEaseData.some((d) => d.value > 0) ? (
+                <BarChart
+                  data={calvingEaseData}
+                  color="#16a34a"
+                  valueFormat={(n) => String(n)}
+                />
+              ) : (
+                <p className="py-8 text-center text-sm text-muted">No birth records available.</p>
+              )}
+            </div>
+          </Card>
+        </div>
       </div>
     </>
   );

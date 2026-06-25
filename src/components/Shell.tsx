@@ -21,25 +21,38 @@ const NAV: NavGroup[] = [
     items: [
       { label: "Farmers", href: "/farmers", icon: "farmer" },
       { label: "Farms", href: "/farms", icon: "farm" },
+      { label: "Farmer Cattle", href: "/farmer-cattle", icon: "cow" },
     ],
   },
   {
     title: "Herd Management",
     items: [
       { label: "Cattle Registry", href: "/cattle", icon: "cow" },
+      { label: "Bull Registry", href: "/bull-registry", icon: "shield" },
       { label: "Breeding Records", href: "/breeding", icon: "heart", badge: 4 },
       { label: "Birth History", href: "/births", icon: "baby" },
       { label: "Genetics & Lineage", href: "/genetics", icon: "dna" },
+      { label: "Pregnancy Diagnosis", href: "/pregnancy-diagnosis", icon: "stethoscope" },
+      { label: "Fertility Analysis", href: "/fertility", icon: "analytics" },
     ],
   },
   {
     title: "Semen Programme",
     items: [
+      { label: "Semen Collections", href: "/semen-supply?tab=collections", icon: "collection" },
       { label: "Semen Catalogue", href: "/semen-supply?tab=catalog", icon: "vial" },
       { label: "Farmer Orders", href: "/semen-supply?tab=orders", icon: "report" },
-      { label: "Sales Agents", href: "/semen-supply?tab=agents", icon: "agent" },
-      { label: "Incentives", href: "/semen-supply?tab=incentives", icon: "percent" },
+      { label: "AI Insemination", href: "/insemination", icon: "syringe" },
       { label: "AI Birth Records", href: "/semen-supply?tab=births", icon: "dna" },
+      { label: "Farmer Calf Births", href: "/farmer-calves", icon: "baby" },
+      { label: "DP Management", href: "/dp-management", icon: "location" },
+      { label: "Agent Straw Issues", href: "/agent-straw", icon: "vial" },
+      { label: "Sales Agents", href: "/semen-supply?tab=agents", icon: "agent" },
+      { label: "Agent Performance", href: "/agent-performance", icon: "analytics" },
+      { label: "Incentives", href: "/semen-supply?tab=incentives", icon: "percent" },
+      { label: "Distribution", href: "/distribution", icon: "network" },
+      { label: "Semen Laboratory", href: "/semen-lab", icon: "vial" },
+      { label: "Cryogenic Storage", href: "/cryogenic-storage", icon: "thermometer" },
     ],
   },
   {
@@ -60,6 +73,16 @@ const NAV: NavGroup[] = [
   {
     title: "Finance & Accounting",
     items: [{ label: "Finance", href: "/finance", icon: "wallet" }],
+  },
+  {
+    title: "Smart Systems",
+    items: [
+      { label: "IoT Monitoring", href: "/iot-monitoring", icon: "wifi" },
+      { label: "Heat Detection", href: "/heat-detection", icon: "flame" },
+      { label: "Movement History", href: "/movement-history", icon: "history" },
+      { label: "QR / RFID Scanner", href: "/qr-scanner", icon: "qrcode" },
+      { label: "Blockchain Registry", href: "/blockchain-registry", icon: "link" },
+    ],
   },
   {
     title: "Reports",

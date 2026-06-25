@@ -41,6 +41,8 @@ import type {
   AIBirthStatus,
   CalfSex,
   CalvingEase,
+  CollectionMethod,
+  CollectionStatus,
 } from "@/lib/types";
 
 // ---- Local tone helpers -----------------------------------------------------
@@ -167,6 +169,28 @@ const emptyAgentForm = {
   notes: "",
 };
 
+const emptyCollectionForm = {
+  bullId: "",
+  collectionDate: "",
+  collectionMethod: "Artificial Vagina (AV)" as CollectionMethod,
+  technician: "",
+  batchNo: "",
+  rawVolumeMl: "",
+  initialMotilityPct: "",
+  initialConcentrationMPerMl: "",
+  initialMorphologyPct: "",
+  diluentUsed: "",
+  extensionRatio: "",
+  progressiveMotilityPct: "",
+  morphologyPct: "",
+  finalConcentrationMPerMl: "",
+  strawsFrozen: "",
+  strawType: "0.5ml" as SemenStrawType,
+  qualityGrade: "" as "A" | "B" | "C" | "",
+  status: "Accepted — Frozen" as CollectionStatus,
+  notes: "",
+};
+
 const emptyBirthForm = {
   semenOrderId: "",
   semenCatalogId: "",
@@ -198,8 +222,8 @@ function SectionTitle({ children }: { children: React.ReactNode }) {
 
 // ---- Page -------------------------------------------------------------------
 
-type TabType = "catalog" | "orders" | "agents" | "incentives" | "births";
-const TAB_VALUES: TabType[] = ["catalog", "orders", "agents", "incentives", "births"];
+type TabType = "collections" | "catalog" | "orders" | "agents" | "incentives" | "births";
+const TAB_VALUES: TabType[] = ["collections", "catalog", "orders", "agents", "incentives", "births"];
 function parseTab(t: string | null): TabType {
   return TAB_VALUES.includes(t as TabType) ? (t as TabType) : "catalog";
 }
@@ -208,6 +232,7 @@ function SemenSupplyContent() {
   const {
     cattle,
     semenCatalog,
+    semenCollections,
     semenOrders,
     semenBirths,
     saleAgents,
@@ -215,6 +240,7 @@ function SemenSupplyContent() {
     farmers,
     farms,
     addSemenCatalog,
+    addSemenCollection,
     addSemenOrder,
     addSemenBirth,
     addSaleAgent,
@@ -252,6 +278,13 @@ function SemenSupplyContent() {
   const [birthOpen, setBirthOpen] = useState(false);
   const [editingBirthId, setEditingBirthId] = useState<string | null>(null);
   const [birthForm, setBirthForm] = useState(emptyBirthForm);
+
+  // Collection modal state
+  const [collectionOpen, setCollectionOpen] = useState(false);
+  const [editingCollectionId, setEditingCollectionId] = useState<string | null>(null);
+  const [collectionForm, setCollectionForm] = useState(emptyCollectionForm);
+  const setCol = (k: keyof typeof emptyCollectionForm) => (v: string) =>
+    setCollectionForm(f => ({ ...f, [k]: v }));
 
   // Filter state
   const [catalogQuery, setCatalogQuery] = useState("");
@@ -380,6 +413,69 @@ function SemenSupplyContent() {
   ), [semenBirths]);
 
   // ---- Catalog form ----------------------------------------------------------
+
+  // ---- Collection handlers ---------------------------------------------------
+
+  function openAddCollection() {
+    setEditingCollectionId(null);
+    setCollectionForm(emptyCollectionForm);
+    setCollectionOpen(true);
+  }
+
+  function openEditCollection(c: import("@/lib/types").SemenCollection) {
+    setEditingCollectionId(c.id);
+    setCollectionForm({
+      bullId:                    c.bullId,
+      collectionDate:            c.collectionDate,
+      collectionMethod:          c.collectionMethod,
+      technician:                c.technician,
+      batchNo:                   c.batchNo,
+      rawVolumeMl:               String(c.rawVolumeMl),
+      initialMotilityPct:        String(c.initialMotilityPct),
+      initialConcentrationMPerMl:String(c.initialConcentrationMPerMl),
+      initialMorphologyPct:      String(c.initialMorphologyPct ?? ""),
+      diluentUsed:               c.diluentUsed ?? "",
+      extensionRatio:            String(c.extensionRatio ?? ""),
+      progressiveMotilityPct:    String(c.progressiveMotilityPct ?? ""),
+      morphologyPct:             String(c.morphologyPct ?? ""),
+      finalConcentrationMPerMl:  String(c.finalConcentrationMPerMl ?? ""),
+      strawsFrozen:              String(c.strawsFrozen),
+      strawType:                 c.strawType,
+      qualityGrade:              c.qualityGrade ?? "",
+      status:                    c.status,
+      notes:                     c.notes ?? "",
+    });
+    setCollectionOpen(true);
+  }
+
+  function submitCollection(e: React.FormEvent) {
+    e.preventDefault();
+    const f = collectionForm;
+    const payload = {
+      bullId:                    f.bullId,
+      collectionDate:            f.collectionDate,
+      collectionMethod:          f.collectionMethod as import("@/lib/types").CollectionMethod,
+      technician:                f.technician.trim(),
+      batchNo:                   f.batchNo.trim(),
+      rawVolumeMl:               Number(f.rawVolumeMl),
+      initialMotilityPct:        Number(f.initialMotilityPct),
+      initialConcentrationMPerMl:Number(f.initialConcentrationMPerMl),
+      initialMorphologyPct:      f.initialMorphologyPct ? Number(f.initialMorphologyPct) : undefined,
+      diluentUsed:               f.diluentUsed.trim() || undefined,
+      extensionRatio:            f.extensionRatio ? Number(f.extensionRatio) : undefined,
+      progressiveMotilityPct:    f.progressiveMotilityPct ? Number(f.progressiveMotilityPct) : undefined,
+      morphologyPct:             f.morphologyPct ? Number(f.morphologyPct) : undefined,
+      finalConcentrationMPerMl:  f.finalConcentrationMPerMl ? Number(f.finalConcentrationMPerMl) : undefined,
+      strawsFrozen:              Number(f.strawsFrozen),
+      strawType:                 f.strawType as import("@/lib/types").SemenStrawType,
+      qualityGrade:              (f.qualityGrade || undefined) as import("@/lib/types").QualityGrade | undefined,
+      status:                    f.status as import("@/lib/types").CollectionStatus,
+      notes:                     f.notes.trim() || undefined,
+    };
+    if (editingCollectionId) update("semenCollections", editingCollectionId, payload);
+    else addSemenCollection(payload);
+    setCollectionOpen(false);
+  }
 
   const setCatalog =
     (k: keyof typeof emptyCatalogForm) => (v: string) =>
@@ -794,30 +890,164 @@ function SemenSupplyContent() {
       </div>
 
       {/* Tab bar */}
-      <div className="mb-4 flex gap-1 border-b border-line">
-        {(["catalog", "orders", "agents", "incentives", "births"] as const).map((tab) => (
+      <div className="mb-4 flex gap-1 overflow-x-auto border-b border-line">
+        {(["collections", "catalog", "orders", "agents", "incentives", "births"] as const).map((tab) => (
           <button
             key={tab}
             type="button"
             onClick={() => router.replace(`/semen-supply?tab=${tab}`, { scroll: false })}
-            className={`px-4 py-2 text-sm font-medium transition border-b-2 -mb-px ${
+            className={`whitespace-nowrap px-4 py-2 text-sm font-medium transition border-b-2 -mb-px ${
               activeTab === tab
                 ? "border-brand-600 text-brand-700"
                 : "border-transparent text-muted hover:text-ink"
             }`}
           >
-            {tab === "catalog"
-              ? "Semen Catalogue"
-              : tab === "orders"
-              ? "Farmer Orders"
-              : tab === "agents"
-              ? "Sales Agents"
-              : tab === "incentives"
-              ? "Incentives"
+            {tab === "collections" ? "Semen Collections"
+              : tab === "catalog" ? "Semen Catalogue"
+              : tab === "orders" ? "Farmer Orders"
+              : tab === "agents" ? "Sales Agents"
+              : tab === "incentives" ? "Incentives"
               : "AI Births"}
           </button>
         ))}
       </div>
+
+      {/* ---- Semen Collections tab ---- */}
+      {activeTab === "collections" && (
+        <>
+          <div className="mb-4 flex items-center justify-between">
+            <p className="text-sm text-muted">
+              {semenCollections.length} collection sessions recorded from own bulls.
+            </p>
+            <PrimaryButton onClick={openAddCollection}>
+              <Icon.plus width={16} height={16} /> Record Collection
+            </PrimaryButton>
+          </div>
+
+          <Card>
+            <Table>
+              <thead>
+                <tr>
+                  <Th>Batch No.</Th>
+                  <Th>Bull</Th>
+                  <Th>Date</Th>
+                  <Th>Method</Th>
+                  <Th>Vol (ml)</Th>
+                  <Th>Motility %</Th>
+                  <Th>Morphology %</Th>
+                  <Th>Post-Thaw %</Th>
+                  <Th>Straws</Th>
+                  <Th>Grade</Th>
+                  <Th>Status</Th>
+                  <Th>Technician</Th>
+                  <Th className="text-right">Actions</Th>
+                </tr>
+              </thead>
+              <tbody>
+                {semenCollections.length === 0 && (
+                  <EmptyRow colSpan={13} label="No collection sessions recorded." />
+                )}
+                {semenCollections.map(col => {
+                  const bull = cattle.find(c => c.id === col.bullId);
+                  const gradeTone = col.qualityGrade === "A" ? "green" : col.qualityGrade === "B" ? "amber" : col.qualityGrade === "C" ? "red" : "gray";
+                  const statusTone = col.status.startsWith("Accepted") ? "green" : col.status === "Pending QC" ? "blue" : "red";
+                  return (
+                    <tr key={col.id} className="transition hover:bg-canvas/60">
+                      <Td><span className="font-mono text-xs font-semibold text-brand-700">{col.batchNo}</span></Td>
+                      <Td>
+                        <div className="flex items-center gap-1.5">
+                          <span className="font-medium">{bull?.name ?? col.bullId}</span>
+                          <span className="font-mono text-[10px] text-muted">{col.bullId}</span>
+                        </div>
+                      </Td>
+                      <Td className="text-muted">{formatDate(col.collectionDate)}</Td>
+                      <Td className="text-sm text-muted">{col.collectionMethod.replace(" (AV)", "")}</Td>
+                      <Td className="font-mono text-sm">{col.rawVolumeMl}</Td>
+                      <Td className="font-mono text-sm">{col.initialMotilityPct}%</Td>
+                      <Td className="font-mono text-sm">{col.initialMorphologyPct != null ? `${col.initialMorphologyPct}%` : "—"}</Td>
+                      <Td className="font-mono text-sm">{col.progressiveMotilityPct != null ? `${col.progressiveMotilityPct}%` : "—"}</Td>
+                      <Td className="font-mono text-sm font-semibold">{col.strawsFrozen}</Td>
+                      <Td>
+                        {col.qualityGrade
+                          ? <Badge tone={gradeTone}>Grade {col.qualityGrade}</Badge>
+                          : <span className="text-muted/40">—</span>}
+                      </Td>
+                      <Td><Badge tone={statusTone}>{col.status.replace("Accepted — ", "").replace("Rejected — ", "Rej. ")}</Badge></Td>
+                      <Td className="text-sm text-muted">{col.technician}</Td>
+                      <Td className="text-right">
+                        <div className="flex items-center justify-end gap-1">
+                          <button onClick={() => openEditCollection(col)}
+                            className="rounded p-1.5 text-muted hover:bg-canvas hover:text-ink">
+                            <Icon.edit width={14} height={14} />
+                          </button>
+                          <button onClick={() => remove("semenCollections", col.id)}
+                            className="rounded p-1.5 text-red-400 hover:bg-red-50">
+                            <Icon.trash width={14} height={14} />
+                          </button>
+                        </div>
+                      </Td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </Table>
+          </Card>
+
+          {/* Collection form modal */}
+          <Modal
+            open={collectionOpen}
+            onClose={() => setCollectionOpen(false)}
+            title={editingCollectionId ? "Edit Collection Record" : "Record Semen Collection"}
+            description="Log a semen collection session from an own-farm bull."
+          >
+            <form onSubmit={submitCollection} className="space-y-4 p-5">
+              <FormGrid>
+                <SelectField label="Bull" value={collectionForm.bullId} onChange={setCol("bullId")}
+                  options={bulls.map(b => ({ value: b.id, label: `${b.name} (${b.id})` }))}
+                  placeholder="Select bull" required />
+                <DateField label="Collection Date" value={collectionForm.collectionDate} onChange={setCol("collectionDate")} required />
+                <SelectField label="Method" value={collectionForm.collectionMethod} onChange={setCol("collectionMethod")}
+                  options={["Artificial Vagina (AV)", "Electroejaculation", "Manual Stimulation"]} />
+                <TextField label="Technician" value={collectionForm.technician} onChange={setCol("technician")} required placeholder="Name of collector" />
+                <TextField label="Batch Number" value={collectionForm.batchNo} onChange={setCol("batchNo")} required placeholder="e.g. BTH-2026-001" />
+                <SelectField label="Straw Type" value={collectionForm.strawType} onChange={setCol("strawType")} options={["0.25ml", "0.5ml"]} />
+
+                <div className="col-span-2 border-t border-line pt-2">
+                  <span className="text-[11px] font-semibold uppercase tracking-wider text-muted">Raw Ejaculate</span>
+                </div>
+                <NumberField label="Volume (ml)" value={collectionForm.rawVolumeMl} onChange={setCol("rawVolumeMl")} step={0.1} required />
+                <NumberField label="Initial Motility %" value={collectionForm.initialMotilityPct} onChange={setCol("initialMotilityPct")} min={0} step={0.1} required />
+                <NumberField label="Initial Concentration (M/ml)" value={collectionForm.initialConcentrationMPerMl} onChange={setCol("initialConcentrationMPerMl")} step={0.1} />
+                <NumberField label="Initial Morphology %" value={collectionForm.initialMorphologyPct} onChange={setCol("initialMorphologyPct")} step={0.1} />
+
+                <div className="col-span-2 border-t border-line pt-2">
+                  <span className="text-[11px] font-semibold uppercase tracking-wider text-muted">Post-Processing / Cryopreservation</span>
+                </div>
+                <TextField label="Diluent Used" value={collectionForm.diluentUsed} onChange={setCol("diluentUsed")} placeholder="e.g. Tris-egg-yolk" />
+                <NumberField label="Extension Ratio (1:x)" value={collectionForm.extensionRatio} onChange={setCol("extensionRatio")} step={0.1} />
+                <NumberField label="Post-Thaw Motility %" value={collectionForm.progressiveMotilityPct} onChange={setCol("progressiveMotilityPct")} step={0.1} />
+                <NumberField label="Post-Thaw Morphology %" value={collectionForm.morphologyPct} onChange={setCol("morphologyPct")} step={0.1} />
+                <NumberField label="Final Concentration (M/ml)" value={collectionForm.finalConcentrationMPerMl} onChange={setCol("finalConcentrationMPerMl")} step={0.1} />
+                <NumberField label="Straws Frozen" value={collectionForm.strawsFrozen} onChange={setCol("strawsFrozen")} required />
+
+                <div className="col-span-2 border-t border-line pt-2">
+                  <span className="text-[11px] font-semibold uppercase tracking-wider text-muted">Quality Assessment</span>
+                </div>
+                <SelectField label="Quality Grade" value={collectionForm.qualityGrade} onChange={setCol("qualityGrade")}
+                  options={["A", "B", "C"]} placeholder="— Pending —" />
+                <SelectField label="Status" value={collectionForm.status} onChange={setCol("status")}
+                  options={["Accepted — Frozen", "Accepted — Chilled", "Rejected — Poor Quality", "Pending QC"]} />
+
+                <div className="col-span-2">
+                  <TextAreaField label="Notes" value={collectionForm.notes} onChange={setCol("notes")} rows={2} />
+                </div>
+              </FormGrid>
+              <FormButtons onCancel={() => setCollectionOpen(false)}
+                submitLabel={editingCollectionId ? "Save Changes" : "Record Collection"} />
+            </form>
+          </Modal>
+        </>
+      )}
 
       {/* ---- Semen Catalogue tab ---- */}
       {activeTab === "catalog" && (

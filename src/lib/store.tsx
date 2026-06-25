@@ -37,6 +37,40 @@ import type {
   SaleIncentive,
   SemenBirth,
   WeightRecord,
+  BullRegistration,
+  CollarReading,
+  MovementRecord,
+  HeatDetectionAlert,
+  BlockchainRecord,
+  DistributionChannel,
+  DistributionArea,
+  TerritoryManager,
+  DistributionZone,
+  DistributionTerritory,
+  SemenQualityTest,
+  SemenBatch,
+  SemenBatchQuality,
+  SemenStraw,
+  NitrogenTank,
+  TankCanister,
+  StrawStorage,
+  Pedigree,
+  GenomicRecord,
+  BatchStatus,
+  StrawStatus,
+  TankStatus,
+  PedigreeStatus,
+  HierarchyLevel,
+  HierarchyNode,
+  FarmerCattle,
+  InseminationEvent,
+  PregnancyDiagnosis,
+  DistributionPoint,
+  DPStrawStock,
+  StrawDispatch,
+  AgentStrawIssue,
+  FarmerCalfBirth,
+  IncentiveSettlement,
 } from "./types";
 import {
   cattle as seedCattle,
@@ -59,6 +93,36 @@ import {
   saleIncentives as seedSaleIncentives,
   semenBirths as seedSemenBirths,
   weightRecords as seedWeightRecords,
+  bullRegistrations as seedBullRegistrations,
+  collarReadings as seedCollarReadings,
+  movementRecords as seedMovementRecords,
+  heatDetectionAlerts as seedHeatDetectionAlerts,
+  blockchainRecords as seedBlockchainRecords,
+  distributionChannels as seedDistributionChannels,
+  distributionAreas as seedDistributionAreas,
+  territoryManagers as seedTerritoryManagers,
+  distributionZones as seedDistributionZones,
+  distributionTerritories as seedDistributionTerritories,
+  semenQualityTests as seedSemenQualityTests,
+  semenBatches as seedSemenBatches,
+  semenBatchQuality as seedSemenBatchQuality,
+  semenStraws as seedSemenStraws,
+  nitrogenTanks as seedNitrogenTanks,
+  tankCanisters as seedTankCanisters,
+  strawStorageLog as seedStrawStorageLog,
+  pedigrees as seedPedigrees,
+  genomicRecords as seedGenomicRecords,
+  hierarchyLevels as seedHierarchyLevels,
+  hierarchyNodes as seedHierarchyNodes,
+  farmerCattle as seedFarmerCattle,
+  inseminationEvents as seedInseminationEvents,
+  pregnancyDiagnoses as seedPregnancyDiagnoses,
+  distributionPoints as seedDistributionPoints,
+  dpStrawStocks as seedDPStrawStocks,
+  strawDispatches as seedStrawDispatches,
+  agentStrawIssues as seedAgentStrawIssues,
+  farmerCalfBirths as seedFarmerCalfBirths,
+  incentiveSettlements as seedIncentiveSettlements,
 } from "./data";
 
 const STORAGE_KEY = "herdline:data:v2";
@@ -83,6 +147,36 @@ interface DataState {
   saleIncentives: SaleIncentive[];
   semenBirths: SemenBirth[];
   weightRecords: WeightRecord[];
+  bullRegistrations: BullRegistration[];
+  collarReadings: CollarReading[];
+  movementRecords: MovementRecord[];
+  heatDetectionAlerts: HeatDetectionAlert[];
+  blockchainRecords: BlockchainRecord[];
+  distributionChannels: DistributionChannel[];
+  distributionAreas: DistributionArea[];
+  territoryManagers: TerritoryManager[];
+  distributionZones: DistributionZone[];
+  distributionTerritories: DistributionTerritory[];
+  hierarchyLevels: HierarchyLevel[];
+  hierarchyNodes: HierarchyNode[];
+  semenQualityTests: SemenQualityTest[];
+  semenBatches: SemenBatch[];
+  semenBatchQuality: SemenBatchQuality[];
+  semenStraws: SemenStraw[];
+  nitrogenTanks: NitrogenTank[];
+  tankCanisters: TankCanister[];
+  strawStorageLog: StrawStorage[];
+  pedigrees: Pedigree[];
+  genomicRecords: GenomicRecord[];
+  farmerCattle: FarmerCattle[];
+  inseminationEvents: InseminationEvent[];
+  pregnancyDiagnoses: PregnancyDiagnosis[];
+  distributionPoints: DistributionPoint[];
+  dpStrawStocks: DPStrawStock[];
+  strawDispatches: StrawDispatch[];
+  agentStrawIssues: AgentStrawIssue[];
+  farmerCalfBirths: FarmerCalfBirth[];
+  incentiveSettlements: IncentiveSettlement[];
 }
 
 const seedState: DataState = {
@@ -105,6 +199,36 @@ const seedState: DataState = {
   saleIncentives: seedSaleIncentives,
   semenBirths: seedSemenBirths,
   weightRecords: seedWeightRecords,
+  bullRegistrations: seedBullRegistrations,
+  collarReadings: seedCollarReadings,
+  movementRecords: seedMovementRecords,
+  heatDetectionAlerts: seedHeatDetectionAlerts,
+  blockchainRecords: seedBlockchainRecords,
+  distributionChannels: seedDistributionChannels,
+  distributionAreas: seedDistributionAreas,
+  territoryManagers: seedTerritoryManagers,
+  distributionZones: seedDistributionZones,
+  distributionTerritories: seedDistributionTerritories,
+  hierarchyLevels: seedHierarchyLevels,
+  hierarchyNodes: seedHierarchyNodes,
+  semenQualityTests: seedSemenQualityTests,
+  semenBatches: seedSemenBatches,
+  semenBatchQuality: seedSemenBatchQuality,
+  semenStraws: seedSemenStraws,
+  nitrogenTanks: seedNitrogenTanks,
+  tankCanisters: seedTankCanisters,
+  strawStorageLog: seedStrawStorageLog,
+  pedigrees: seedPedigrees,
+  genomicRecords: seedGenomicRecords,
+  farmerCattle: seedFarmerCattle,
+  inseminationEvents: seedInseminationEvents,
+  pregnancyDiagnoses: seedPregnancyDiagnoses,
+  distributionPoints: seedDistributionPoints,
+  dpStrawStocks: seedDPStrawStocks,
+  strawDispatches: seedStrawDispatches,
+  agentStrawIssues: seedAgentStrawIssues,
+  farmerCalfBirths: seedFarmerCalfBirths,
+  incentiveSettlements: seedIncentiveSettlements,
 };
 
 // Next sequential id for a prefix from the trailing number of existing ids
@@ -139,6 +263,41 @@ export interface DataContextValue extends DataState {
   addSaleIncentive: (i: Omit<SaleIncentive, "id">) => void;
   addSemenBirth: (b: Omit<SemenBirth, "id">) => void;
   addWeightRecord: (w: Omit<WeightRecord, "id">) => void;
+  addBullRegistration: (r: Omit<BullRegistration, "id">) => void;
+  addCollarReading: (r: Omit<CollarReading, "id">) => void;
+  addMovementRecord: (m: Omit<MovementRecord, "id">) => void;
+  addHeatDetectionAlert: (h: Omit<HeatDetectionAlert, "id">) => void;
+  addBlockchainRecord: (b: Omit<BlockchainRecord, "id">) => void;
+  addDistributionChannel: (c: Omit<DistributionChannel, "id">) => void;
+  addDistributionArea: (a: Omit<DistributionArea, "id">) => void;
+  addTerritoryManager: (m: Omit<TerritoryManager, "id">) => void;
+  addDistributionZone: (z: Omit<DistributionZone, "id">) => void;
+  addDistributionTerritory: (t: Omit<DistributionTerritory, "id">) => void;
+  addHierarchyLevel: (l: Omit<HierarchyLevel, "id">) => void;
+  addHierarchyNode: (n: Omit<HierarchyNode, "id">) => void;
+  addSemenQualityTest: (q: Omit<SemenQualityTest, "id">) => void;
+  addSemenBatch: (b: Omit<SemenBatch, "id">) => void;
+  addSemenBatchQuality: (q: Omit<SemenBatchQuality, "id">) => void;
+  addSemenStraw: (s: Omit<SemenStraw, "id">) => void;
+  addNitrogenTank: (t: Omit<NitrogenTank, "id">) => void;
+  addTankCanister: (c: Omit<TankCanister, "id">) => void;
+  addStrawStorageLog: (s: Omit<StrawStorage, "id">) => void;
+  addPedigree: (p: Omit<Pedigree, "id">) => void;
+  addGenomicRecord: (g: Omit<GenomicRecord, "id">) => void;
+  addFarmerCattle: (fc: Omit<FarmerCattle, "id">) => void;
+  addInseminationEvent: (ie: Omit<InseminationEvent, "id">) => void;
+  addPregnancyDiagnosis: (pd: Omit<PregnancyDiagnosis, "id">) => void;
+  addDistributionPoint: (dp: Omit<DistributionPoint, "id">) => void;
+  addDPStrawStock: (s: Omit<DPStrawStock, "id">) => void;
+  addStrawDispatch: (d: Omit<StrawDispatch, "id">) => void;
+  addAgentStrawIssue: (i: Omit<AgentStrawIssue, "id">) => void;
+  addFarmerCalfBirth: (b: Omit<FarmerCalfBirth, "id">) => void;
+  addIncentiveSettlement: (s: Omit<IncentiveSettlement, "id">) => void;
+  /** Atomically creates a BirthRecord + Cattle record for a live birth. */
+  addBirthAndCalf: (
+    birth: Omit<BirthRecord, "id" | "calfId">,
+    calf: Omit<Cattle, "id">,
+  ) => string; // returns the generated calfId
   /** Patch a record in any collection by id. */
   update: <K extends keyof DataState>(
     key: K,
@@ -482,6 +641,275 @@ export function DataProvider({ children }: { children: ReactNode }) {
     }));
   }, []);
 
+  const addBullRegistration = useCallback<DataContextValue["addBullRegistration"]>((r) => {
+    setState((s) => ({
+      ...s,
+      bullRegistrations: [
+        {
+          ...r,
+          id: nextId("BREG-", s.bullRegistrations.map((x) => x.id), 3),
+        },
+        ...s.bullRegistrations,
+      ],
+    }));
+  }, []);
+
+  const addDistributionChannel = useCallback<DataContextValue["addDistributionChannel"]>((c) => {
+    setState((s) => ({
+      ...s,
+      distributionChannels: [
+        { ...c, id: nextId("DC-", s.distributionChannels.map((x) => x.id), 3) },
+        ...s.distributionChannels,
+      ],
+    }));
+  }, []);
+
+  const addDistributionArea = useCallback<DataContextValue["addDistributionArea"]>((a) => {
+    setState((s) => ({
+      ...s,
+      distributionAreas: [
+        { ...a, id: nextId("DA-", s.distributionAreas.map((x) => x.id), 3) },
+        ...s.distributionAreas,
+      ],
+    }));
+  }, []);
+
+  const addTerritoryManager = useCallback<DataContextValue["addTerritoryManager"]>((m) => {
+    setState((s) => ({
+      ...s,
+      territoryManagers: [
+        { ...m, id: nextId("TM-", s.territoryManagers.map((x) => x.id), 3) },
+        ...s.territoryManagers,
+      ],
+    }));
+  }, []);
+
+  const addDistributionZone = useCallback<DataContextValue["addDistributionZone"]>((z) => {
+    setState((s) => ({
+      ...s,
+      distributionZones: [
+        { ...z, id: nextId("DZ-", s.distributionZones.map((x) => x.id), 3) },
+        ...s.distributionZones,
+      ],
+    }));
+  }, []);
+
+  const addDistributionTerritory = useCallback<DataContextValue["addDistributionTerritory"]>((t) => {
+    setState((s) => ({
+      ...s,
+      distributionTerritories: [
+        { ...t, id: nextId("DT-", s.distributionTerritories.map((x) => x.id), 3) },
+        ...s.distributionTerritories,
+      ],
+    }));
+  }, []);
+
+  const addHierarchyLevel = useCallback<DataContextValue["addHierarchyLevel"]>((l) => {
+    setState((s) => ({
+      ...s,
+      hierarchyLevels: [
+        { ...l, id: nextId("LVL-", s.hierarchyLevels.map((x) => x.id), 3) },
+        ...s.hierarchyLevels,
+      ],
+    }));
+  }, []);
+
+  const addHierarchyNode = useCallback<DataContextValue["addHierarchyNode"]>((n) => {
+    setState((s) => ({
+      ...s,
+      hierarchyNodes: [
+        { ...n, id: nextId("HN-", s.hierarchyNodes.map((x) => x.id), 3) },
+        ...s.hierarchyNodes,
+      ],
+    }));
+  }, []);
+
+  const addSemenQualityTest = useCallback<DataContextValue["addSemenQualityTest"]>((q) => {
+    setState((s) => ({
+      ...s,
+      semenQualityTests: [{ ...q, id: nextId("SQT-", s.semenQualityTests.map((x) => x.id), 3) }, ...s.semenQualityTests],
+    }));
+  }, []);
+
+  const addSemenBatch = useCallback<DataContextValue["addSemenBatch"]>((b) => {
+    setState((s) => ({
+      ...s,
+      semenBatches: [{ ...b, id: nextId("SB-", s.semenBatches.map((x) => x.id), 3) }, ...s.semenBatches],
+    }));
+  }, []);
+
+  const addSemenBatchQuality = useCallback<DataContextValue["addSemenBatchQuality"]>((q) => {
+    setState((s) => ({
+      ...s,
+      semenBatchQuality: [{ ...q, id: nextId("SBQ-", s.semenBatchQuality.map((x) => x.id), 3) }, ...s.semenBatchQuality],
+    }));
+  }, []);
+
+  const addSemenStraw = useCallback<DataContextValue["addSemenStraw"]>((s2) => {
+    setState((s) => ({
+      ...s,
+      semenStraws: [{ ...s2, id: nextId("SS-", s.semenStraws.map((x) => x.id), 3) }, ...s.semenStraws],
+    }));
+  }, []);
+
+  const addNitrogenTank = useCallback<DataContextValue["addNitrogenTank"]>((t) => {
+    setState((s) => ({
+      ...s,
+      nitrogenTanks: [{ ...t, id: nextId("TK-", s.nitrogenTanks.map((x) => x.id), 3) }, ...s.nitrogenTanks],
+    }));
+  }, []);
+
+  const addTankCanister = useCallback<DataContextValue["addTankCanister"]>((c) => {
+    setState((s) => ({
+      ...s,
+      tankCanisters: [{ ...c, id: nextId("CAN-", s.tankCanisters.map((x) => x.id), 3) }, ...s.tankCanisters],
+    }));
+  }, []);
+
+  const addStrawStorageLog = useCallback<DataContextValue["addStrawStorageLog"]>((l) => {
+    setState((s) => ({
+      ...s,
+      strawStorageLog: [{ ...l, id: nextId("STS-", s.strawStorageLog.map((x) => x.id), 3) }, ...s.strawStorageLog],
+    }));
+  }, []);
+
+  const addPedigree = useCallback<DataContextValue["addPedigree"]>((p) => {
+    setState((s) => ({
+      ...s,
+      pedigrees: [{ ...p, id: nextId("PED-", s.pedigrees.map((x) => x.id), 3) }, ...s.pedigrees],
+    }));
+  }, []);
+
+  const addGenomicRecord = useCallback<DataContextValue["addGenomicRecord"]>((g) => {
+    setState((s) => ({
+      ...s,
+      genomicRecords: [{ ...g, id: nextId("GEN-", s.genomicRecords.map((x) => x.id), 3) }, ...s.genomicRecords],
+    }));
+  }, []);
+
+  const addFarmerCattle = useCallback<DataContextValue["addFarmerCattle"]>((fc) => {
+    setState((s) => ({
+      ...s,
+      farmerCattle: [{ ...fc, id: nextId("FC-", s.farmerCattle.map((x) => x.id), 3) }, ...s.farmerCattle],
+    }));
+  }, []);
+
+  const addInseminationEvent = useCallback<DataContextValue["addInseminationEvent"]>((ie) => {
+    setState((s) => ({
+      ...s,
+      inseminationEvents: [{ ...ie, id: nextId("IE-", s.inseminationEvents.map((x) => x.id), 3) }, ...s.inseminationEvents],
+    }));
+  }, []);
+
+  const addPregnancyDiagnosis = useCallback<DataContextValue["addPregnancyDiagnosis"]>((pd) => {
+    setState((s) => ({
+      ...s,
+      pregnancyDiagnoses: [{ ...pd, id: nextId("PD-", s.pregnancyDiagnoses.map((x) => x.id), 3) }, ...s.pregnancyDiagnoses],
+    }));
+  }, []);
+
+  const addDistributionPoint = useCallback<DataContextValue["addDistributionPoint"]>((dp) => {
+    setState((s) => ({
+      ...s,
+      distributionPoints: [{ ...dp, id: nextId("DP-", s.distributionPoints.map((x) => x.id), 3) }, ...s.distributionPoints],
+    }));
+  }, []);
+
+  const addDPStrawStock = useCallback<DataContextValue["addDPStrawStock"]>((st) => {
+    setState((s) => ({
+      ...s,
+      dpStrawStocks: [{ ...st, id: nextId("DPSS-", s.dpStrawStocks.map((x) => x.id), 3) }, ...s.dpStrawStocks],
+    }));
+  }, []);
+
+  const addStrawDispatch = useCallback<DataContextValue["addStrawDispatch"]>((d) => {
+    setState((s) => ({
+      ...s,
+      strawDispatches: [{ ...d, id: nextId("SD-", s.strawDispatches.map((x) => x.id), 3) }, ...s.strawDispatches],
+    }));
+  }, []);
+
+  const addAgentStrawIssue = useCallback<DataContextValue["addAgentStrawIssue"]>((i) => {
+    setState((s) => ({
+      ...s,
+      agentStrawIssues: [{ ...i, id: nextId("ASI-", s.agentStrawIssues.map((x) => x.id), 3) }, ...s.agentStrawIssues],
+    }));
+  }, []);
+
+  const addFarmerCalfBirth = useCallback<DataContextValue["addFarmerCalfBirth"]>((b) => {
+    setState((s) => ({
+      ...s,
+      farmerCalfBirths: [{ ...b, id: nextId("FCB-", s.farmerCalfBirths.map((x) => x.id), 3) }, ...s.farmerCalfBirths],
+    }));
+  }, []);
+
+  const addIncentiveSettlement = useCallback<DataContextValue["addIncentiveSettlement"]>((st) => {
+    setState((s) => ({
+      ...s,
+      incentiveSettlements: [{ ...st, id: nextId("IS-", s.incentiveSettlements.map((x) => x.id), 3) }, ...s.incentiveSettlements],
+    }));
+  }, []);
+
+  const addBirthAndCalf = useCallback<DataContextValue["addBirthAndCalf"]>((birthData, calfData) => {
+    let assignedCalfId = "";
+    setState((s) => {
+      const calfId = nextId("C-", s.cattle.map((x) => x.id));
+      assignedCalfId = calfId;
+      const newCalf: Cattle = { ...calfData, id: calfId };
+      const newBirth: BirthRecord = {
+        ...birthData,
+        id: nextId("B-", s.birthRecords.map((x) => x.id)),
+        calfId,
+      };
+      return {
+        ...s,
+        cattle: [newCalf, ...s.cattle],
+        birthRecords: [newBirth, ...s.birthRecords],
+      };
+    });
+    return assignedCalfId;
+  }, []);
+
+  const addMovementRecord = useCallback<DataContextValue["addMovementRecord"]>((m) => {
+    setState((s) => ({
+      ...s,
+      movementRecords: [
+        { ...m, id: nextId("MV-", s.movementRecords.map((x) => x.id), 3) },
+        ...s.movementRecords,
+      ],
+    }));
+  }, []);
+
+  const addCollarReading = useCallback<DataContextValue["addCollarReading"]>((r) => {
+    setState((s) => ({
+      ...s,
+      collarReadings: [
+        { ...r, id: nextId("CR-", s.collarReadings.map((x) => x.id), 3) },
+        ...s.collarReadings,
+      ],
+    }));
+  }, []);
+
+  const addHeatDetectionAlert = useCallback<DataContextValue["addHeatDetectionAlert"]>((h) => {
+    setState((s) => ({
+      ...s,
+      heatDetectionAlerts: [
+        { ...h, id: nextId("HD-", s.heatDetectionAlerts.map((x) => x.id), 3) },
+        ...s.heatDetectionAlerts,
+      ],
+    }));
+  }, []);
+
+  const addBlockchainRecord = useCallback<DataContextValue["addBlockchainRecord"]>((b) => {
+    setState((s) => ({
+      ...s,
+      blockchainRecords: [
+        { ...b, id: nextId("BC-", s.blockchainRecords.map((x) => x.id), 3) },
+        ...s.blockchainRecords,
+      ],
+    }));
+  }, []);
+
   const addSemenOrder = useCallback<DataContextValue["addSemenOrder"]>((o) => {
     setState((s) => ({
       ...s,
@@ -546,6 +974,37 @@ export function DataProvider({ children }: { children: ReactNode }) {
       addSaleIncentive,
       addSemenBirth,
       addWeightRecord,
+      addBullRegistration,
+      addCollarReading,
+      addMovementRecord,
+      addHeatDetectionAlert,
+      addBlockchainRecord,
+      addDistributionChannel,
+      addDistributionArea,
+      addTerritoryManager,
+      addDistributionZone,
+      addDistributionTerritory,
+      addHierarchyLevel,
+      addHierarchyNode,
+      addSemenQualityTest,
+      addSemenBatch,
+      addSemenBatchQuality,
+      addSemenStraw,
+      addNitrogenTank,
+      addTankCanister,
+      addStrawStorageLog,
+      addPedigree,
+      addGenomicRecord,
+      addFarmerCattle,
+      addInseminationEvent,
+      addPregnancyDiagnosis,
+      addDistributionPoint,
+      addDPStrawStock,
+      addStrawDispatch,
+      addAgentStrawIssue,
+      addFarmerCalfBirth,
+      addIncentiveSettlement,
+      addBirthAndCalf,
       update,
       remove,
       cattleLabel,
@@ -571,6 +1030,37 @@ export function DataProvider({ children }: { children: ReactNode }) {
       addSaleIncentive,
       addSemenBirth,
       addWeightRecord,
+      addBullRegistration,
+      addCollarReading,
+      addMovementRecord,
+      addHeatDetectionAlert,
+      addBlockchainRecord,
+      addDistributionChannel,
+      addDistributionArea,
+      addTerritoryManager,
+      addDistributionZone,
+      addDistributionTerritory,
+      addHierarchyLevel,
+      addHierarchyNode,
+      addSemenQualityTest,
+      addSemenBatch,
+      addSemenBatchQuality,
+      addSemenStraw,
+      addNitrogenTank,
+      addTankCanister,
+      addStrawStorageLog,
+      addPedigree,
+      addGenomicRecord,
+      addFarmerCattle,
+      addInseminationEvent,
+      addPregnancyDiagnosis,
+      addDistributionPoint,
+      addDPStrawStock,
+      addStrawDispatch,
+      addAgentStrawIssue,
+      addFarmerCalfBirth,
+      addIncentiveSettlement,
+      addBirthAndCalf,
       update,
       remove,
       cattleLabel,
