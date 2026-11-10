@@ -21,6 +21,7 @@ import type {
   MuzzlePrint,
   WeightRecord,
   BullRegistration,
+  CollarDevice,
   CollarReading,
   MovementRecord,
   HeatDetectionAlert,
@@ -1972,17 +1973,32 @@ export const hierarchyNodes: HierarchyNode[] = [
 
 // ---- IoT Collar Readings ----------------------------------------------------
 
+export const collarDevices: CollarDevice[] = [
+  { id: "CD-001", serialNumber: "AX-2024-001", brand: "Allflex SenseHub", model: "SenseHub 3.0",    cattleId: "C-1001", assignedDate: "2026-01-15", status: "Active" },
+  { id: "CD-002", serialNumber: "SCR-HT-002",  brand: "SCR HeatTime Pro", model: "HeatTime V",      cattleId: "C-1002", assignedDate: "2026-01-20", status: "Active" },
+  { id: "CD-003", serialNumber: "CM-EAR-003",  brand: "CowManager",       model: "Ear Tag V2",      cattleId: "C-1003", assignedDate: "2026-02-01", status: "Active" },
+  { id: "CD-004", serialNumber: "CL-V3-004",   brand: "Cowlar v3",                                   cattleId: "C-1004", assignedDate: "2026-02-10", status: "Active" },
+  { id: "CD-005", serialNumber: "AX-2024-005", brand: "Allflex SenseHub", model: "SenseHub 3.0",    cattleId: "C-1005", assignedDate: "2026-02-15", status: "Active", notes: "Battery low — scheduled for swap" },
+  { id: "CD-006", serialNumber: "CL-V3-006",   brand: "Cowlar v3",                                   cattleId: "C-1007", assignedDate: "2026-03-01", status: "Active" },
+  { id: "CD-007", serialNumber: "SB-ZT-007",   brand: "Smartbow (Zoetis)",                           cattleId: "C-2001", assignedDate: "2026-03-10", status: "Active" },
+  { id: "CD-008", serialNumber: "AX-2024-008", brand: "Allflex SenseHub", model: "SenseHub 3.0",    cattleId: "C-2002", assignedDate: "2026-03-15", status: "Active", notes: "Battery critical — replace immediately" },
+  { id: "CD-009", serialNumber: "SCR-HT-009",  brand: "SCR HeatTime Pro", model: "HeatTime V",      cattleId: "C-1008", assignedDate: "2026-04-01", status: "Active" },
+  { id: "CD-010", serialNumber: "CM-EAR-010",  brand: "CowManager",       model: "Ear Tag V2",      cattleId: "C-1006", assignedDate: "2026-04-15", status: "Active" },
+  { id: "CD-011", serialNumber: "AX-2024-011", brand: "Allflex SenseHub", model: "SenseHub 3.0",    status: "Inactive", notes: "Available for assignment" },
+  { id: "CD-012", serialNumber: "CL-V3-012",   brand: "Cowlar v3",                                   status: "Maintenance", notes: "GPS chip under repair — ETA 2026-07-05" },
+];
+
 export const collarReadings: CollarReading[] = [
-  { id: "CR-001", cattleId: "C-1001", temperature: 38.6, activityIndex: 42, batteryPct: 87, heartRate: 68, ruminationMinPh: 38, gpsLat: -17.848, gpsLng: 31.047, lastSync: "2026-06-23T07:15:00", isOnline: true },
-  { id: "CR-002", cattleId: "C-1002", temperature: 39.1, activityIndex: 81, batteryPct: 64, heartRate: 78, ruminationMinPh: 22, gpsLat: -17.849, gpsLng: 31.048, lastSync: "2026-06-23T07:14:00", isOnline: true },
-  { id: "CR-003", cattleId: "C-1003", temperature: 39.8, activityIndex: 35, batteryPct: 91, heartRate: 74, ruminationMinPh: 41, gpsLat: -17.852, gpsLng: 31.053, lastSync: "2026-06-23T07:10:00", isOnline: true },
-  { id: "CR-004", cattleId: "C-1004", temperature: 38.4, activityIndex: 58, batteryPct: 73, heartRate: 71, ruminationMinPh: 44, gpsLat: -17.918, gpsLng: 31.118, lastSync: "2026-06-23T07:12:00", isOnline: true },
-  { id: "CR-005", cattleId: "C-1005", temperature: 38.2, activityIndex: 29, batteryPct: 18, heartRate: 66, ruminationMinPh: 47, gpsLat: -17.921, gpsLng: 31.122, lastSync: "2026-06-23T06:42:00", isOnline: true },
-  { id: "CR-006", cattleId: "C-1007", temperature: 39.6, activityIndex: 19, batteryPct: 55, heartRate: 82, ruminationMinPh: 15, gpsLat: -18.012, gpsLng: 31.078, lastSync: "2026-06-23T07:13:00", isOnline: true },
-  { id: "CR-007", cattleId: "C-2001", temperature: 38.8, activityIndex: 45, batteryPct: 92, heartRate: 58, gpsLat: -17.851, gpsLng: 31.046, lastSync: "2026-06-23T07:16:00", isOnline: true },
-  { id: "CR-008", cattleId: "C-2002", temperature: 38.5, activityIndex: 37, batteryPct: 14, heartRate: 61, gpsLat: -17.921, gpsLng: 31.117, lastSync: "2026-06-23T05:30:00", isOnline: false },
-  { id: "CR-009", cattleId: "C-1008", temperature: 38.3, activityIndex: 53, batteryPct: 79, heartRate: 69, ruminationMinPh: 42, gpsLat: -17.919, gpsLng: 31.119, lastSync: "2026-06-23T07:11:00", isOnline: true },
-  { id: "CR-010", cattleId: "C-1006", temperature: 38.7, activityIndex: 88, batteryPct: 66, heartRate: 80, ruminationMinPh: 18, gpsLat: -18.008, gpsLng: 31.082, lastSync: "2026-06-23T07:09:00", isOnline: true },
+  { id: "CR-001", collarId: "CD-001", cattleId: "C-1001", temperature: 38.6, activityIndex: 42, batteryPct: 87, heartRate: 68, ruminationMinPh: 38, gpsLat: -17.848, gpsLng: 31.047, lastSync: "2026-06-23T07:15:00", isOnline: true },
+  { id: "CR-002", collarId: "CD-002", cattleId: "C-1002", temperature: 39.1, activityIndex: 81, batteryPct: 64, heartRate: 78, ruminationMinPh: 22, gpsLat: -17.849, gpsLng: 31.048, lastSync: "2026-06-23T07:14:00", isOnline: true },
+  { id: "CR-003", collarId: "CD-003", cattleId: "C-1003", temperature: 39.8, activityIndex: 35, batteryPct: 91, heartRate: 74, ruminationMinPh: 41, gpsLat: -17.852, gpsLng: 31.053, lastSync: "2026-06-23T07:10:00", isOnline: true },
+  { id: "CR-004", collarId: "CD-004", cattleId: "C-1004", temperature: 38.4, activityIndex: 58, batteryPct: 73, heartRate: 71, ruminationMinPh: 44, gpsLat: -17.918, gpsLng: 31.118, lastSync: "2026-06-23T07:12:00", isOnline: true },
+  { id: "CR-005", collarId: "CD-005", cattleId: "C-1005", temperature: 38.2, activityIndex: 29, batteryPct: 18, heartRate: 66, ruminationMinPh: 47, gpsLat: -17.921, gpsLng: 31.122, lastSync: "2026-06-23T06:42:00", isOnline: true },
+  { id: "CR-006", collarId: "CD-006", cattleId: "C-1007", temperature: 39.6, activityIndex: 19, batteryPct: 55, heartRate: 82, ruminationMinPh: 15, gpsLat: -18.012, gpsLng: 31.078, lastSync: "2026-06-23T07:13:00", isOnline: true },
+  { id: "CR-007", collarId: "CD-007", cattleId: "C-2001", temperature: 38.8, activityIndex: 45, batteryPct: 92, heartRate: 58, gpsLat: -17.851, gpsLng: 31.046, lastSync: "2026-06-23T07:16:00", isOnline: true },
+  { id: "CR-008", collarId: "CD-008", cattleId: "C-2002", temperature: 38.5, activityIndex: 37, batteryPct: 14, heartRate: 61, gpsLat: -17.921, gpsLng: 31.117, lastSync: "2026-06-23T05:30:00", isOnline: false },
+  { id: "CR-009", collarId: "CD-009", cattleId: "C-1008", temperature: 38.3, activityIndex: 53, batteryPct: 79, heartRate: 69, ruminationMinPh: 42, gpsLat: -17.919, gpsLng: 31.119, lastSync: "2026-06-23T07:11:00", isOnline: true },
+  { id: "CR-010", collarId: "CD-010", cattleId: "C-1006", temperature: 38.7, activityIndex: 88, batteryPct: 66, heartRate: 80, ruminationMinPh: 18, gpsLat: -18.008, gpsLng: 31.082, lastSync: "2026-06-23T07:09:00", isOnline: true },
 ];
 
 // ---- Animal Movement History ------------------------------------------------

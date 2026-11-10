@@ -38,6 +38,7 @@ import type {
   SemenBirth,
   WeightRecord,
   BullRegistration,
+  CollarDevice,
   CollarReading,
   MovementRecord,
   HeatDetectionAlert,
@@ -94,6 +95,7 @@ import {
   semenBirths as seedSemenBirths,
   weightRecords as seedWeightRecords,
   bullRegistrations as seedBullRegistrations,
+  collarDevices as seedCollarDevices,
   collarReadings as seedCollarReadings,
   movementRecords as seedMovementRecords,
   heatDetectionAlerts as seedHeatDetectionAlerts,
@@ -148,6 +150,7 @@ interface DataState {
   semenBirths: SemenBirth[];
   weightRecords: WeightRecord[];
   bullRegistrations: BullRegistration[];
+  collarDevices: CollarDevice[];
   collarReadings: CollarReading[];
   movementRecords: MovementRecord[];
   heatDetectionAlerts: HeatDetectionAlert[];
@@ -200,6 +203,7 @@ const seedState: DataState = {
   semenBirths: seedSemenBirths,
   weightRecords: seedWeightRecords,
   bullRegistrations: seedBullRegistrations,
+  collarDevices: seedCollarDevices,
   collarReadings: seedCollarReadings,
   movementRecords: seedMovementRecords,
   heatDetectionAlerts: seedHeatDetectionAlerts,
@@ -264,6 +268,7 @@ export interface DataContextValue extends DataState {
   addSemenBirth: (b: Omit<SemenBirth, "id">) => void;
   addWeightRecord: (w: Omit<WeightRecord, "id">) => void;
   addBullRegistration: (r: Omit<BullRegistration, "id">) => void;
+  addCollarDevice: (d: Omit<CollarDevice, "id">) => void;
   addCollarReading: (r: Omit<CollarReading, "id">) => void;
   addMovementRecord: (m: Omit<MovementRecord, "id">) => void;
   addHeatDetectionAlert: (h: Omit<HeatDetectionAlert, "id">) => void;
@@ -880,6 +885,16 @@ export function DataProvider({ children }: { children: ReactNode }) {
     }));
   }, []);
 
+  const addCollarDevice = useCallback<DataContextValue["addCollarDevice"]>((d) => {
+    setState((s) => ({
+      ...s,
+      collarDevices: [
+        { ...d, id: nextId("CD-", s.collarDevices.map((x) => x.id), 3) },
+        ...s.collarDevices,
+      ],
+    }));
+  }, []);
+
   const addCollarReading = useCallback<DataContextValue["addCollarReading"]>((r) => {
     setState((s) => ({
       ...s,
@@ -975,6 +990,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
       addSemenBirth,
       addWeightRecord,
       addBullRegistration,
+      addCollarDevice,
       addCollarReading,
       addMovementRecord,
       addHeatDetectionAlert,
@@ -1031,6 +1047,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
       addSemenBirth,
       addWeightRecord,
       addBullRegistration,
+      addCollarDevice,
       addCollarReading,
       addMovementRecord,
       addHeatDetectionAlert,

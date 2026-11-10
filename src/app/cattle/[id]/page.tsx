@@ -1,6 +1,6 @@
 "use client";
 
-import { use, useMemo, useState } from "react";
+import { use, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Card, CardHeader, Table, Th, Td, StatusBadge, Badge, EmptyRow } from "@/components/ui";
@@ -313,10 +313,11 @@ export default function CattleDetailPage(props: { params: Promise<{ id: string }
 
   const animal = cattle.find(c => c.id === id);
 
-  if (!animal) {
-    router.replace("/cattle");
-    return null;
-  }
+  useEffect(() => {
+    if (!animal) router.replace("/cattle");
+  }, [animal, router]);
+
+  if (!animal) return null;
 
   const farm = farms.find(f => f.id === animal.farmId);
   const muzzlePrint = seedMuzzlePrints.find(p => p.cattleId === id);

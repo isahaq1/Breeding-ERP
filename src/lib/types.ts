@@ -428,8 +428,22 @@ export interface Farm {
 
 // ---- IoT Smart Collar -------------------------------------------------------
 
+export type CollarDeviceStatus = "Active" | "Inactive" | "Lost" | "Maintenance";
+
+export interface CollarDevice {
+  id: string;             // "CD-001"
+  serialNumber: string;   // manufacturer device serial
+  brand: string;
+  model?: string;
+  cattleId?: string;      // assigned animal; undefined = unassigned
+  assignedDate?: string;  // ISO date
+  status: CollarDeviceStatus;
+  notes?: string;
+}
+
 export interface CollarReading {
   id: string;                  // "CR-001"
+  collarId?: string;            // FK to CollarDevice.id
   cattleId: string;
   temperature: number;         // body temperature °C (normal 38.0–39.5)
   activityIndex: number;       // 0-100 movement intensity
